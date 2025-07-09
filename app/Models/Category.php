@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends Model
@@ -28,7 +29,7 @@ class Category extends Model
 
         static::creating(function ($category) {
             if (empty($category->slug)) {
-                $category->slug = str_slug($category->name);
+                $category->slug = Str::slug($category->name);
             }
         });
     }

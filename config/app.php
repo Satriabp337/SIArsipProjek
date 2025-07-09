@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -182,7 +183,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'Image' => Intervention\Image\Laravel\Facades\Image::class,
     ])->toArray(),
 
 ];

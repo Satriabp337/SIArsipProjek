@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Document;
+use App\Models\Category;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,27 +20,30 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/home', function () {
-    $totalDocuments = App\Models\Document::count();
-    $totalCategories = App\Models\Category::count();
-    $totalTags = App\Models\Tag::count();
-    return view('home', compact('totalDocuments', 'totalCategories', 'totalTags'));
-});
-
-Route::get('/welcome', function () {
-    return view('welcome');
-});
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('categories', App\Http\Controllers\CategoryController::class);
+Route::get('/dashboard', function () {
+    $totalDocuments = Document::count();
+    $totalCategories = Category::count();
+    $totalTags = Tag::count();
+    return view('dashboard', compact('totalDocuments', 'totalCategories', 'totalTags'));
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Document management routes
-Route::resource('documents', App\Http\Controllers\DocumentController::class);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-// Removed duplicate /home route
-Route::get('/home', function () {
-    return view('home');
+    // Document management routes
+    Route::resource('documents', DocumentController::class);
+
+    // Category management routes
+    Route::resource('categories', CategoryController::class);
+
+    // Tag management routes
+    Route::resource('tags', TagController::class);
 });
+
+require __DIR__.'/auth.php';
