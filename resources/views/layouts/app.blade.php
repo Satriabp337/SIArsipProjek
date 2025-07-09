@@ -15,6 +15,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/categories">Kategori</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documents">Dokumen</a>
+                    </li>
                 </ul>
             </div>
         </div>
