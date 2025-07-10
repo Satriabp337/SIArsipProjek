@@ -35,12 +35,12 @@
             <!-- <li class="nav-item"><a href="#" class="nav-link active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li> -->
             <li><a href="/dashboard" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dashboard</a></li>
             <li><a href="/document" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dokumen</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
+            <li><a href="/kategori" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
+            <li><a href="/upload" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
             <li><a href="/laporan" class="nav-link"><i class="bi bi-bar-chart me-2"></i>Laporan</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
+            <li><a href="/pengguna" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
+            <li><a href="/arsip" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
+            <li><a href="/pengaturan" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
         </ul>
     </nav>
 <!-- Main Content -->
@@ -54,16 +54,14 @@
                 <img src="https://ui-avatars.com/api/?name=Agus+Setiawan" alt="Profile" class="profile-img">
             </div>
         </nav>
-    </div>
 
-<!-- Search Results -->
+        <!-- Search Results -->
     <main class="flex-1 overflow-y-auto bg-gray-50 p-6">
       <h2 class="text-xl font-semibold mb-4 text-gray-800">Hasil Pencarian</h2>
-      <ul id="resultsList" class="space-y-4">
+      <div id="resultsList" class="space-y-4">
         <!-- Search results will be appended here -->
-      </ul>
+      </div>
     </main>
-  </div>
   <script>
     // Dummy data representing documents
     const documents = [
@@ -104,18 +102,18 @@
     function renderResults(results) {
       resultsList.innerHTML = "";
       if (results.length === 0) {
-        resultsList.innerHTML = '<li class="text-gray-500">Tidak ada dokumen yang ditemukan.</li>';
+        resultsList.innerHTML = '<div class="text-gray-500">Tidak ada dokumen yang ditemukan.</div>';
         return;
       }
       results.forEach(doc => {
-        const li = document.createElement("li");
-        li.className = "p-4 bg-white rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow";
-        li.innerHTML = `
+        const div = document.createElement("div");
+        div.className = "p-4 bg-white rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow";
+        div.innerHTML = `
           <h3 class="text-lg font-semibold text-indigo-700 mb-1">${sanitizeHTML(doc.name)}</h3>
           <p class="text-sm text-gray-600 mb-1"><span class="font-semibold">Kategori:</span> ${sanitizeHTML(doc.category)}</p>
-          <p class="text-sm text-gray-600"><span class="font-semibold">Tag:</span> ${doc.tags.map(t => `<span class="inline-block bg-indigo-100 text-indigo-800 text-xs px-2 py-0.5 rounded mr-1">${sanitizeHTML(t)}</span>`).join("")}</p>
+          <p class="text-sm text-gray-600"><span class="font-semibold">Tag:</span> ${doc.tags.map(t => sanitizeHTML(t)).join(", ")}</p>
         `;
-        resultsList.appendChild(li);
+        resultsList.appendChild(div);
       });
     }
 
@@ -145,6 +143,10 @@
       renderResults(filtered);
     });
   </script>
+
+    </div>
+
+
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
