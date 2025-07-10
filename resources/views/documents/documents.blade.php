@@ -1,79 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arsip Digital - Documents</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background: #f8fafc; }
+        .sidebar { min-width: 220px; background: #fff; border-right: 1px solid #e5e7eb; min-height: 100vh; }
+        .sidebar .nav-link.active { background: #f1f5f9; font-weight: 600; }
+        .sidebar .nav-link { color: #222; }
+        .sidebar .nav-link:hover { background: #f1f5f9; }
+        .profile-img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+        .card-metric { min-width: 180px; }
+        .quick-action { border-radius: 12px; }
+        .quick-action .icon { font-size: 1.5rem; }
+    </style>
 </head>
+
 <body>
     <div class="d-flex">
-        <!-- Sidebar -->
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px; height: 100vh;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-                <span class="fs-4">Arsip Digital</span>
-            </a>
-            <hr>
+        <nav class="sidebar d-flex flex-column p-3">
+            <div class="mb-4">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        style="width:40px;height:40px;font-size:1.5rem;">A</div>
+                    <div class="ms-2">
+                        <div class="fw-bold">Arsip Digital</div>
+                        <small class="text-muted">Kementerian Dalam Negeri</small>
+                    </div>
+                </div>
+            </div>
             <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
-                        <i class="bi bi-speedometer2 me-2"></i>
-                        Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-file-text me-2"></i>
-                        Dokumen
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-folder me-2"></i>
-                        Kategori
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-upload me-2"></i>
-                        Upload
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-file-earmark-bar-graph me-2"></i>
-                        Laporan
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-people me-2"></i>
-                        Pengguna
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-archive me-2"></i>
-                        Arsip
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="nav-link link-dark">
-                        <i class="bi bi-gear me-2"></i>
-                        Pengaturan
-                    </a>
-                </li>
+                <!-- <li class="nav-item"><a href="#" class="nav-link active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li> -->
+                <li><a href="/dashboard" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dashboard</a></li>
+                <li><a href="/documents" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dokumen</a></li>
+                <li><a href="#" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
+                <li><a href="/upload" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
+                <li><a href="#" class="nav-link"><i class="bi bi-bar-chart me-2"></i>Laporan</a></li>
+                <li><a href="#" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
+                <li><a href="#" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
+                <li><a href="#" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
             </ul>
-        </div>
-
+        </nav>
         <!-- Main Content -->
         <div class="flex-grow-1 p-4">
+            <nav class="navbar navbar-light bg-white px-4 py-3 border-bottom">
+                <form class="d-flex w-50">
+                    <input class="form-control me-2" type="search" placeholder="Cari dokumen, kategori, atau tag..."
+                        aria-label="Search">
+                </form>
+                <div class="d-flex align-items-center">
+                    <span class="me-3">Dr. Agus Setiawan <span class="badge bg-secondary ms-1">admin</span></span>
+                    <img src="https://ui-avat ars.com/api/?name=Agus+Setiawan" alt="Profile" class="profile-img">
+                </div>
+            </nav>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Dokumen</h2>
                 <div class="d-flex gap-2">
                     <div class="dropdown">
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        <button class="btn btn-outline-secondary dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
                             Tanggal Upload
                         </button>
                         <ul class="dropdown-menu">
@@ -119,9 +108,12 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-muted small">Versi 2 • 12 unduhan</div>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-download"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-download"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i
+                                            class="bi bi-pencil"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -155,9 +147,12 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-muted small">Versi 3 • 89 unduhan</div>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-download"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-download"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i
+                                            class="bi bi-pencil"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -191,9 +186,12 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="text-muted small">Versi 1 • 25 unduhan</div>
                                 <div>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="bi bi-download"></i></button>
-                                    <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-pencil"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-eye"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary me-1"><i
+                                            class="bi bi-download"></i></button>
+                                    <button class="btn btn-sm btn-outline-secondary"><i
+                                            class="bi bi-pencil"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -205,4 +203,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
