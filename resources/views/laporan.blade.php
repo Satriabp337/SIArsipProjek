@@ -35,12 +35,12 @@
             <!-- <li class="nav-item"><a href="#" class="nav-link active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li> -->
             <li><a href="/dashboard" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dashboard</a></li>
             <li><a href="/document" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dokumen</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
+            <li><a href="/kategori" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
+            <li><a href="/upload" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
             <li><a href="/laporan" class="nav-link"><i class="bi bi-bar-chart me-2"></i>Laporan</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
-            <li><a href="#" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
+            <li><a href="/pengguna" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
+            <li><a href="/arsip" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
+            <li><a href="/pengaturan" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
         </ul>
     </nav>
 <!-- Main Content -->
