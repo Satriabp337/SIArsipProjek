@@ -28,6 +28,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/document', function () {
-    return view('document');
+Route::get('/app', function () {
+    return view('documents/app');
 });
+
