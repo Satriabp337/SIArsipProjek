@@ -39,3 +39,7 @@ Route::get('/upload', function () {
 Route::get('/laporan', function () {
     return view('laporan');
 });
+
+Route::get('/kategori', function () {
+    return view('kategori');
+});
