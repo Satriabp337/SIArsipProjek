@@ -43,7 +43,7 @@
             <li><a href="#" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
         </ul>
     </nav>
-    <!-- Main Content -->
+<!-- Main Content -->
     <div class="flex-grow-1">
         <nav class="navbar navbar-light bg-white px-4 py-3 border-bottom">
             <form class="d-flex w-50">
@@ -135,4 +135,3 @@
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
