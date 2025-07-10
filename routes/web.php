@@ -28,7 +28,14 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 });
 
-Route::get('/app', function () {
-    return view('documents/app');
+Route::get('/documents', function () {
+    return view('documents/documents');
 });
 
+Route::get('/upload', function () {
+    return view('upload/upload');
+});
+
+Route::get('/laporan', function () {
+    return view('laporan');
+});
