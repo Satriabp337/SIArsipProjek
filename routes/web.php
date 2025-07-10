@@ -43,3 +43,11 @@ Route::get('/laporan', function () {
 Route::get('/kategori', function () {
     return view('kategori');
 });
+
+Route::get('/pengguna', function () {
+    return view('pengguna');
+});
+
+Route::get('/arsip', function () {
+    return view('arsip');
+});
