@@ -25,25 +25,5 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $totalDocuments = Document::count();
-    $totalCategories = Category::count();
-    $totalTags = Tag::count();
-    return view('dashboard', compact('totalDocuments', 'totalCategories', 'totalTags'));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    // Document management routes
-    Route::resource('documents', DocumentController::class);
-
-    // Category management routes
-    Route::resource('categories', CategoryController::class);
-
-    // Tag management routes
-    Route::resource('tags', TagController::class);
+    return view('dashboard');
 });
-
-require __DIR__.'/auth.php';
