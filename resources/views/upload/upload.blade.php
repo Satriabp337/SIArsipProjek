@@ -85,11 +85,11 @@
                 <!-- <li class="nav-item"><a href="#" class="nav-link active"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li> -->
                 <li><a href="/dashboard" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dashboard</a></li>
                 <li><a href="/documents" class="nav-link"><i class="bi bi-file-earmark-text me-2"></i>Dokumen</a></li>
-                <li><a href="#" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
+                <li><a href="kategori" class="nav-link"><i class="bi bi-folder me-2"></i>Kategori</a></li>
                 <li><a href="/upload" class="nav-link"><i class="bi bi-upload me-2"></i>Upload</a></li>
-                <li><a href="#" class="nav-link"><i class="bi bi-bar-chart me-2"></i>Laporan</a></li>
-                <li><a href="#" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
-                <li><a href="#" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
+                <li><a href="/laporan" class="nav-link"><i class="bi bi-bar-chart me-2"></i>Laporan</a></li>
+                <li><a href="/pengguna" class="nav-link"><i class="bi bi-people me-2"></i>Pengguna</a></li>
+                <li><a href="/arsip" class="nav-link"><i class="bi bi-archive me-2"></i>Arsip</a></li>
                 <li><a href="#" class="nav-link"><i class="bi bi-gear me-2"></i>Pengaturan</a></li>
             </ul>
         </nav>
@@ -103,97 +103,99 @@
                 </form>
                 <div class="d-flex align-items-center">
                     <span class="me-3">Dr. Agus Setiawan <span class="badge bg-secondary ms-1">admin</span></span>
-                    <img src="https://ui-avat ars.com/api/?name=Agus+Setiawan" alt="Profile" class="profile-img">
+                    <img src="https://ui-avatars.com/api/?name=Agus+Setiawan" alt="Profile" class="profile-img">
                 </div>
             </nav>
+
             <div class="container-fluid py-4">
                 <div>
                     <h4 class="mb-1">Upload Dokumen</h4>
                     <div class="text-muted">Unggah dokumen baru ke dalam sistem arsip</div>
                 </div>
-                <div class="d-flex align-items-center gap-2">
-                    <img src="https://ui-avatars.com/api/?name=Agus+Setiawan" alt="avatar" class="rounded-circle"
-                        width="40" height="40">
-                    <div>
-                        <div class="fw-semibold">Dr. Agus Setiawan</div>
-                        <div class="text-muted small">admin</div>
-                    </div>
-                </div>
             </div>
-            <!-- Pilih File -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="fw-semibold mb-2">Pilih File</div>
-                    <div class="dropzone mb-3">
-                        <i class="bi bi-cloud-arrow-up"></i>
-                        <div class="mt-2">Drag & drop file di sini atau klik untuk memilih</div>
-                        <div class="small text-muted">Mendukung PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX (Max 50MB)
+
+            <!-- Upload Form Start -->
+            <form action="{{ route('documents.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+
+                <!-- Pilih File -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="fw-semibold mb-2">Pilih File</div>
+                        <input type="file" name="file" class="form-control" required>
+                        <div class="small text-muted mt-2">
+                            Mendukung PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX (Max 50MB)
                         </div>
-                        <button class="btn btn-primary mt-3">Pilih File</button>
                     </div>
                 </div>
-            </div>
-            <!-- Informasi Dokumen -->
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="fw-semibold mb-3">Informasi Dokumen</div>
-                    <form>
+
+                <!-- Informasi Dokumen -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="fw-semibold mb-3">Informasi Dokumen</div>
+
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label">Judul Dokumen <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" placeholder="Masukkan judul dokumen">
+                                <input type="text" name="title" class="form-control" placeholder="Masukkan judul dokumen" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Kategori <span class="text-danger">*</span></label>
-                                <select class="form-select">
-                                    <option selected>Pilih kategori</option>
-                                    <option>Umum</option>
-                                    <option>Keuangan</option>
-                                    <option>SDM</option>
+                                <select name="category_id" class="form-select" required>
+                                    <option value="">Pilih kategori</option>
+                                    @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label">Sub Kategori</label>
-                                <input type="text" class="form-control" placeholder="Masukkan sub kategori">
+                                <input type="text" name="sub_category" class="form-control" placeholder="Masukkan sub kategori">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Departemen <span class="text-danger">*</span></label>
-                                <select class="form-select">
-                                    <option selected>Pilih departemen</option>
-                                    <option>Keuangan</option>
-                                    <option>SDM</option>
-                                    <option>Umum</option>
+                                <select name="department_id" class="form-select" required>
+                                    <option value="">Pilih departemen</option>
+                                    @foreach($departments as $dept)
+                                    <option value="{{ $dept->id }}">{{ $dept->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
+
                         <div class="row mb-3">
                             <div class="col-md-6 mb-3 mb-md-0">
                                 <label class="form-label">Tingkat Akses <span class="text-danger">*</span></label>
-                                <select class="form-select">
-                                    <option selected>Internal</option>
-                                    <option>Publik</option>
+                                <select name="access_level" class="form-select" required>
+                                    <option value="Internal" selected>Internal</option>
+                                    <option value="Public">Publik</option>
+                                    <option value="Confidential">Rahasia</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Tags (pisahkan dengan koma)</label>
-                                <input type="text" class="form-control"
-                                    placeholder="contoh: laporan, keuangan, triwulan">
+                                <input type="text" name="tags" class="form-control" placeholder="contoh: laporan, keuangan, triwulan">
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" rows="3" placeholder="Masukkan deskripsi dokumen"></textarea>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Masukkan deskripsi dokumen"></textarea>
                         </div>
+
                         <div class="d-flex justify-content-end gap-2">
-                            <button type="button" class="btn btn-outline-secondary">Batal</button>
+                            <a href="#" class="btn btn-outline-secondary">Batal</a>
                             <button type="submit" class="btn btn-primary">Upload Dokumen</button>
                         </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
+
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
