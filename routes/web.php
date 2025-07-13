@@ -5,11 +5,13 @@ use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Response;
 use App\Models\Document;
 use App\Models\Category;
 use App\Models\Department;
 use App\Models\Tag;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\LaporanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,9 +36,9 @@ Route::get('/dashboard', function () {
 //     return view('documents/documents');
 // });
 
-Route::get('/laporan', function () {
-    return view('laporan');
-});
+// Route::get('/laporan', function () {
+//     return view('laporan');
+// });
 
 /*
 */
@@ -59,5 +61,11 @@ Route::get('/documents', [DocumentsController::class, 'index'])->name('documents
 
 Route::get('/documents/{document}/edit', [DocumentsController::class, 'edit'])->name('documents.edit');
 Route::put('/documents/{document}', [DocumentsController::class, 'update'])->name('documents.update');
+Route::get('/documents/file/{filename}', [DocumentsController::class, 'serveFile'])->name('documents.file');
 
 Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
+Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download');
+
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
+Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');

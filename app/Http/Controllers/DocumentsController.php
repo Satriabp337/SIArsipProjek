@@ -7,6 +7,7 @@ use App\Models\Documents;
 use App\Models\Department;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
 
 class DocumentsController extends Controller
 {
@@ -18,7 +19,7 @@ class DocumentsController extends Controller
             'category_id' => 'required|exists:categories,id',
             'department_id' => 'required|exists:departments,id',
             'access_level' => 'required|in:Public,Internal,Confidential',
-            'file' => 'required|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx',
+            'file' => 'required|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png',
         ]);
 
         // Simpan file
@@ -51,26 +52,87 @@ class DocumentsController extends Controller
         return view('upload.upload', compact('departments', 'categories'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $documents = Documents::with(['category', 'department'])->latest()->get();
-        return view('documents.documents', compact('documents'));
+        $query = Documents::with(['category', 'department']);
+
+        if ($request->filled('search')) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('tags', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        if ($request->filled('department_id')) {
+            $query->where('department_id', $request->department_id);
+        }
+
+        $documents = $query->latest()->paginate(6);
+        $categories = Category::all();
+        $departments = Department::all();
+
+        return view('documents.index', compact('documents', 'categories', 'departments'));
     }
+
 
     public function getFile($filename, Request $request)
     {
-        $filePath = 'public/' . $filename;
+        $document = Documents::where('filename', $filename)->firstOrFail();
 
-        if (!Storage::exists($filePath)) {
-            abort(404, 'File not found: ' . $filename);
+        $path = storage_path('app/public/' . $filename);
+
+        if (!file_exists($path)) {
+            abort(404, 'File tidak ditemukan.');
         }
 
-        $disposition = $request->query('disposition', 'inline'); // default to inline
+        $disposition = $request->query('disposition', 'inline');
 
-        try {
-            return Storage::response($filePath, null, ['Content-Disposition' => $disposition]);
-        } catch (\Exception $e) {
-            abort(500, 'Error serving file: ' . $e->getMessage());
-        }
+        return response()->file($path, [
+            'Content-Type' => mime_content_type($path),
+            'Content-Disposition' => $disposition . '; filename="' . $document->original_filename . '"',
+        ]);
+    }
+
+    public function edit($id)
+    {
+        $document = Documents::findOrFail($id);
+        $categories = Category::all();
+        $departments = Department::all();
+
+        return view('documents.edit', compact('document', 'categories', 'departments'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $document = Documents::findOrFail($id);
+
+        $request->validate([
+            'title' => 'required',
+            'category_id' => 'required',
+            'department_id' => 'required',
+            'access_level' => 'required|in:Public,Internal,Confidential',
+        ]);
+
+        $document->update($request->only([
+            'title',
+            'category_id',
+            'sub_category',
+            'department_id',
+            'access_level',
+            'tags',
+            'description'
+        ]));
+
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diperbarui.');
+    }
+
+    public function download($id)
+    {
+        $document =Documents::findOrFail($id);
+        $document->increment('download_count');
+
+        return response()->download(storage_path("app/public/" . $document->filename), $document->original_filename);
     }
 }
