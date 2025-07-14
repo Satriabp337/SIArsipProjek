@@ -49,6 +49,16 @@ class LaporanController extends Controller
         ]);
     }
 
+    public function chartDepartment()
+    {
+        $departments = Department::withCount('documents')->get();
+
+        return response()->json([
+            'labels' => $departments->pluck('name'),
+            'data' => $departments->pluck('documents_count'),
+        ]);
+    }
+
     public function exportPdf(Request $request)
     {
         $query = Documents::query();

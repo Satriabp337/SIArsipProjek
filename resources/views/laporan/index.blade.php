@@ -84,7 +84,7 @@
 </div>
 @endsection
 
-@push('scripts')
+@push('script')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -125,9 +125,9 @@
 
         // Chart Departemen
         fetch('/api/chart-data/department-documents')
-            .then(res => res.json())
+            .then(response => response.json())
             .then(data => {
-                new Chart(document.getElementById('departmentChart'), {
+                const departmentChart = new Chart(document.getElementById('departmentChart'), {
                     type: 'pie',
                     data: {
                         labels: data.labels,
@@ -135,20 +135,21 @@
                             label: 'Jumlah Dokumen',
                             data: data.data,
                             backgroundColor: [
-                                '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e',
-                                '#e74a3b', '#858796', '#5a5c69', '#2e59d9'
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)'
                             ]
                         }]
                     },
                     options: {
                         responsive: true,
                         plugins: {
-                            legend: {
-                                position: 'right'
-                            },
                             title: {
                                 display: true,
-                                text: 'Distribusi Dokumen per Departemen'
+                                text: 'Jumlah Dokumen per Departemen'
                             }
                         }
                     }

@@ -68,4 +68,5 @@ Route::get('/documents/download/{filename}', [DocumentsController::class, 'downl
 
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
+Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
 Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
