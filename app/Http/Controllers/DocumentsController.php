@@ -27,7 +27,7 @@ class DocumentsController extends Controller
         $path = $file->store('arsip', 'public');
 
         // Simpan ke DB
-        Documents::create([
+            Documents::create([
             'title' => $request->title,
             'category_id' => $request->category_id,
             'sub_category' => $request->sub_category,
