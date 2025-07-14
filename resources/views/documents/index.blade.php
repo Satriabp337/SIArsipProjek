@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
 <!-- Main Content -->
-<div class="flex-grow-1">
+<div class="container py-4">
     @include('layouts.navbar')
     <form method="GET" class="row g-3 align-items-end mb-4">
         <div class="col-md-4">

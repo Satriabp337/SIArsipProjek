@@ -41,21 +41,29 @@ class LaporanController extends Controller
     public function getCategoryDocumentsChartData()
     {
         // Fetch your data, similar to how you're doing it in the Blade file
-        $documentsPerCategory = Category::withCount('documents')->get();
+        $query = Category::withCount(['documents' => function ($q) {
+            if (request()->start && request()->end) {
+                $q->whereBetween('created_at', [request()->start, request()->end]);
+            }
+        }])->get();
 
         return response()->json([
-            'labels' => $documentsPerCategory->pluck('name'),
-            'data' => $documentsPerCategory->pluck('documents_count'),
+            'labels' => $query->pluck('name'),
+            'data' => $query->pluck('documents_count')
         ]);
     }
 
     public function chartDepartment()
     {
-        $departments = Department::withCount('documents')->get();
+        $query = Department::withCount(['documents' => function ($q) {
+            if (request()->start && request()->end) {
+                $q->whereBetween('created_at', [request()->start, request()->end]);
+            }
+        }])->get();
 
         return response()->json([
-            'labels' => $departments->pluck('name'),
-            'data' => $departments->pluck('documents_count'),
+            'labels' => $query->pluck('name'),
+            'data' => $query->pluck('documents_count')
         ]);
     }
 

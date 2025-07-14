@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container py-4">
+<div class="container py-4 justify-content-center">
     <h4 class="mb-4">Statistik Arsip Dokumen</h4>
 
     <!-- Filter Tanggal -->
@@ -45,20 +45,24 @@
     </div>
 
     <!-- Grafik Dokumen per Kategori -->
-    <div class="mb-5">
+    <div class="mb-5 text-center">
         <h5 class="mb-3">Grafik Dokumen per Kategori</h5>
         <canvas id="categoryChart" height="100"></canvas>
     </div>
 
     <!-- Grafik Dokumen per Departemen -->
-    <div class="mb-5">
+    <div class="mb-5 text-center">
         <h5 class="mb-3">Grafik Dokumen per Departemen</h5>
-        <canvas id="departmentChart" height="100"></canvas>
+        <div class="d-flex justify-content-center">
+            <div style="width: 80%; max-width: 600px;">
+                <canvas id="departmentChart"></canvas>
+            </div>
+        </div>
     </div>
 
     <!-- Detail Jumlah -->
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 text-center">
             <h6>Dokumen per Kategori</h6>
             <ul class="list-group">
                 @foreach($documentsPerCategory as $cat)
@@ -69,7 +73,7 @@
                 @endforeach
             </ul>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 text-center">
             <h6>Dokumen per Departemen</h6>
             <ul class="list-group">
                 @foreach($documentsPerDepartment as $dept)
