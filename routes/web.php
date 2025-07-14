@@ -13,6 +13,7 @@ use App\Models\Tag;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\LaporanController;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

@@ -9,14 +9,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <style>
-    
+
     </style>
 </head>
 
 <body>
     <div class="d-flex">
         <!-- Sidebar -->
-        <nav class="sidebar bg-light vh-100 border-end p-3" style="width: 250px; position: sticky; top: 0;">
+        <nav class="sidebar d-flex flex-column bg-light vh-100 border-end p-3" style="width: 250px; position: sticky; top: 0;">
             <div class="mb-4">
                 <div class="d-flex align-items-center mb-3">
                     <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
@@ -75,6 +75,11 @@
                     </a>
                 </li>
             </ul>
+
+            <div class="mt-auto pt-3 border-top">
+                <small class="text-muted">Logged in as:<br><strong>Dr. Agus Setiawan (admin)</strong></small>
+            </div>
+
         </nav>
         <!-- Main Content -->
         <main class="flex-grow-1">
