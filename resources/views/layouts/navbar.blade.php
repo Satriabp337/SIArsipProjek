@@ -6,6 +6,13 @@
         <span class="me-3">Dr. Agus Setiawan <span class="badge bg-secondary ms-1">admin</span></span>
         <img src="https://ui-avat ars.com/api/?name=Agus+Setiawan" alt="Profile" class="profile-img">
     </div>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
+<a href="/login" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    Logout
+</a>
 </nav>
 
 <!-- <div class="header">
