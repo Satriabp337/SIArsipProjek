@@ -14,7 +14,8 @@ use App\Models\Tag;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\SettingController;
+use App\Http\Controllers\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +32,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth']);
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+
 
 // Route::get('/documents', function () {
 //     return view('documents/documents');
@@ -67,9 +67,11 @@ Route::put('/documents/{document}', [DocumentsController::class, 'update'])->nam
 Route::get('/documents/file/{filename}', [DocumentsController::class, 'serveFile'])->name('documents.file');
 
 Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
-Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download');
+Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
+Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->name('documents.preview.excel');
 
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+
 Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
 Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
 Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
@@ -80,5 +82,8 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/pengguna/{user}', [UserController::class, 'update'])->name('pengguna.update');
     Route::delete('/pengguna/{user}', [UserController::class, 'destroy'])->name('pengguna.destroy');
 });
+
+Route::get('/pengaturan', [SettingController::class, 'index'])->name('settings.index');
+Route::post('/pengaturan', [SettingController::class, 'update'])->name('settings.update');
 
 require __DIR__.'/auth.php';

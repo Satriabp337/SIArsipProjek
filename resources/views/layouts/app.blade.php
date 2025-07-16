@@ -70,7 +70,7 @@
 
                 <!-- Pengaturan -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-dark">
+                    <a href="/pengaturan" class="nav-link text-dark">
                         <i class="bi bi-gear me-2"></i> Pengaturan
                     </a>
                 </li>
@@ -90,6 +90,36 @@
 
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Notifikasi flash untuk success -->
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
+        });
+    </script>
+    @endif
+
+    @if (session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal!',
+        text: "{{ session('error') }}",
+        confirmButtonColor: '#d33',
+        confirmButtonText: 'OK'
+    });
+</script>
+@endif
+
     @stack('script')
 </body>
 

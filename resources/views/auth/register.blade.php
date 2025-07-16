@@ -14,15 +14,29 @@
         <input id="email" type="email" name="email" value="{{ old('email') }}" required class="form-control">
     </div>
 
-    <div class="mb-3">
-        <label for="password" class="form-label">Kata Sandi</label>
-        <input id="password" type="password" name="password" required class="form-control">
-    </div>
+<div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        required
+        placeholder="Minimal 8 karakter">
+</div>
 
-    <div class="mb-3">
-        <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi</label>
-        <input id="password_confirmation" type="password" name="password_confirmation" required class="form-control">
-    </div>
+
+<div class="mb-3">
+    <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+    <input
+        type="password"
+        class="form-control"
+        id="password_confirmation"
+        name="password_confirmation"
+        required
+        placeholder="Minimal 8 karakter">
+</div>
+
 
     <div class="d-grid mb-3">
         <button type="submit" class="btn btn-primary">Daftar</button>

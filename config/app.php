@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'ASIA/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +183,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Image' => Intervention\Image\Laravel\Facades\Image::class,
+        // Remove or comment out until Intervention Image package is properly installed
+        // 'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

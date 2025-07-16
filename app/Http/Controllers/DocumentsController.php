@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use App\Models\Documents;
 use App\Models\Department;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class DocumentsController extends Controller
 {
@@ -27,7 +30,7 @@ class DocumentsController extends Controller
         $path = $file->store('arsip', 'public');
 
         // Simpan ke DB
-            Documents::create([
+        Documents::create([
             'title' => $request->title,
             'category_id' => $request->category_id,
             'sub_category' => $request->sub_category,
@@ -41,7 +44,7 @@ class DocumentsController extends Controller
             'file_size' => $file->getSize(),
         ]);
 
-        return redirect()->back()->with('success', 'Dokumen berhasil diupload.');
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diunggah!');
     }
 
     public function create()
@@ -130,9 +133,29 @@ class DocumentsController extends Controller
 
     public function download($id)
     {
-        $document =Documents::findOrFail($id);
+        $document = Documents::findOrFail($id);
         $document->increment('download_count');
 
         return response()->download(storage_path("app/public/" . $document->filename), $document->original_filename);
+    }
+
+    public function previewExcel($filename)
+    {
+        $filePath = storage_path('public/storage/arsip' . $filename); // Sesuaikan path kamu
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+
+        $spreadsheet = IOFactory::load($filePath);
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray();
+
+        return view('documents.preview-excel', compact('data'));
+    }
+
+    public function boot()
+    {
+        Paginator::useBootstrapFive(); // atau useBootstrapFour jika versi 4
     }
 }

@@ -86,10 +86,31 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="text-muted small">Versi 1 • 0 unduhan</div>
+
                         <div>
-                            <a href="{{ route('documents.file', ['filename' => $document->filename, 'disposition' => 'inline']) }}" target="_blank" class="btn btn-sm btn-outline-secondary me-1" title="View"><i class="bi bi-eye"></i></a>
-                            <a href="{{ route('documents.download', $document->id) }}" class="btn btn-sm btn-outline-secondary me-1" title="Download"><i class="bi bi-download"></i></a>
-                            <a href="{{ route('documents.edit', ['document' => $document->id]) }}" class="btn btn-sm btn-outline-secondary" title="Edit"><i class="bi bi-pencil"></i></a>
+                            <div>
+                                @php
+                                $ext = strtolower($document->file_type);
+                                @endphp
+
+                                @if(in_array($ext, ['xlsx', 'xls']))
+                                <a href="{{ route('documents.preview.excel', ['filename' => $document->filename]) }}" class="btn btn-sm btn-outline-secondary me-1" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                @else
+                                <a href="{{ route('documents.file', ['filename' => $document->filename, 'disposition' => 'inline']) }}" target="_blank" class="btn btn-sm btn-outline-secondary me-1" title="View">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                @endif
+
+                                <a href="{{ route('documents.download', $document->id) }}" class="btn btn-sm btn-outline-secondary me-1" title="Download">
+                                    <i class="bi bi-download"></i>
+                                </a>
+                                <a href="{{ route('documents.edit', ['document' => $document->id]) }}" class="btn btn-sm btn-outline-secondary" title="Edit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -97,19 +118,19 @@
         </div>
         @endforeach
 
-        <div class="mt-4">
-            {{ $documents->withQueryString()->links('pagination::bootstrap-5') }}
+        <div class="d-flex justify-content-between align-items-center mt-4">
+            <div class="text-muted">
+                Showing {{ $documents->firstItem() }} to {{ $documents->lastItem() }} of {{ $documents->total() }} results
+            </div>
+            <div>
+                {{ $documents->appends(request()->query())->links('pagination::bootstrap-5') }}
+            </div>
         </div>
+
 
         @else
         <p>Tidak ada dokumen tersedia.</p>
         @endif
-    </div>
-    <div class="d-flex justify-content-center mt-4">
-        {{ $documents->appends(request()->all())->links() }}
-    </div>
-    <div class="mt-4">
-        {{ $documents->links() }}
     </div>
 </div>
 @endsection

@@ -45,7 +45,7 @@ body {
 .sidebar .collapse {
     transition: all 0.3s ease-in-out;
 }
-    
+
 /* Profil */
 .profile-img {
     width: 40px;
@@ -68,7 +68,7 @@ main.container {
 .card {
     border: none;
     border-radius: 0.75rem;
-    box-shadow: 0 0 10px rgba(0,0,0,0.03);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.03);
 }
 
 .card .card-title {
@@ -111,4 +111,16 @@ main.container {
     main.container {
         margin-top: 5rem;
     }
+
+    /* pagination */
+    
+    .pagination {
+        justify-content: center;
+    }
+
+    .page-item.active .page-link {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
 }
