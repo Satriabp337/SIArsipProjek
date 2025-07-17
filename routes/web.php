@@ -30,71 +30,50 @@ use App\Http\Controllers\AuditController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login'); // arahkan ke login jika belum login
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
-
-
-// Route::get('/documents', function () {
-//     return view('documents/documents');
-// });
-
-// Route::get('/laporan', function () {
-//     return view('laporan');
-// });
-
-/*
-*/
-
-Route::get('/kategori', [CategoryController::class, 'index'])->name('kategori.index');
-Route::get('/kategori/{category}', [CategoryController::class, 'show'])->name('kategori.show');
-
-Route::get('/pengguna', function () {
-    return view('pengguna');
-});
-
-Route::get('/arsip', function () {
-    return view('arsip');
-});
-
-Route::get('/pengaturan', function () {
-    return view('pengaturan');
-});
-
-Route::get('/audit', function () {
-    return view('audit');
-});
-
-Route::get('/audit-logs', [AuditController::class, 'showAuditLogs'])->name('audit.logs');
-
-Route::get('/upload', [DocumentsController::class, 'create'])->name('documents.create');
-Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store');
-
-Route::get('/documents', [DocumentsController::class, 'index'])->name('documents.index');
-
-Route::get('/documents/{document}/edit', [DocumentsController::class, 'edit'])->name('documents.edit');
-Route::put('/documents/{document}', [DocumentsController::class, 'update'])->name('documents.update');
-Route::get('/documents/file/{filename}', [DocumentsController::class, 'serveFile'])->name('documents.file');
-
-Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
-Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
-Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->where('filename', '.*')->name('documents.preview.excel');
-
-Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-
-Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
-Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
-Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
-
+// Semua route penting dibungkus dalam middleware 'auth'
 Route::middleware(['auth'])->group(function () {
+
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('/kategori', [CategoryController::class, 'index'])->name('kategori.index');
+    Route::get('/kategori/{category}', [CategoryController::class, 'show'])->name('kategori.show');
+
     Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
     Route::get('/pengguna/{user}/edit', [UserController::class, 'edit'])->name('pengguna.edit');
     Route::put('/pengguna/{user}', [UserController::class, 'update'])->name('pengguna.update');
     Route::delete('/pengguna/{user}', [UserController::class, 'destroy'])->name('pengguna.destroy');
-});
 
-Route::get('/pengaturan', [SettingController::class, 'index'])->name('settings.index');
-Route::post('/pengaturan', [SettingController::class, 'update'])->name('settings.update');
+    Route::get('/arsip', function () {
+        return view('arsip');
+    });
+
+    Route::get('/pengaturan', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('/pengaturan', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/audit', function () {
+        return view('audit');
+    });
+    Route::get('/audit-logs', [AuditController::class, 'showAuditLogs'])->name('audit.logs');
+
+    Route::get('/upload', [DocumentsController::class, 'create'])->name('documents.create');
+    Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store');
+
+    Route::get('/documents', [DocumentsController::class, 'index'])->name('documents.index');
+    Route::get('/documents/{document}/edit', [DocumentsController::class, 'edit'])->name('documents.edit');
+    Route::put('/documents/{document}', [DocumentsController::class, 'update'])->name('documents.update');
+
+    Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
+    Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
+    Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->where('filename', '.*')->name('documents.preview.excel');
+
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
+
+    Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
+    Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
+});
 
 require __DIR__.'/auth.php';
