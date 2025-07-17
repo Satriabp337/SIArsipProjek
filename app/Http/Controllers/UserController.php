@@ -31,6 +31,14 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
+        \App\Models\audit::create([
+            'user_id' => auth()->id(), // ID pengguna yang melakukan edit
+            'user_name' => auth()->user()->name, // Username pengguna
+            'user_email' => auth()->user()->email, // Email pengguna
+            'action' => 'Profile Edit', // Tindakan yang dilakukan
+            'details' => 'Edit user dengan ID: ' . $user->id . ' dengan nama: ' . $user->name, // Detail tindakan
+            ]);
+
         return redirect()->route('pengguna.index')->with('success', 'User berhasil diperbarui.');
     }
 

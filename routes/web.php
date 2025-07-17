@@ -16,6 +16,7 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuditController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,16 @@ Route::get('/pengguna', function () {
 Route::get('/arsip', function () {
     return view('arsip');
 });
+
+Route::get('/pengaturan', function () {
+    return view('pengaturan');
+});
+
+Route::get('/audit', function () {
+    return view('audit');
+});
+
+Route::get('/audit-logs', [AuditController::class, 'showAuditLogs'])->name('audit.logs');
 
 Route::get('/upload', [DocumentsController::class, 'create'])->name('documents.create');
 Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store');
