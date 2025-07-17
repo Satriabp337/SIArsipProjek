@@ -4,37 +4,25 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAuditsTable extends Migration
+class CreateAuditLogsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
-        Schema::create('audits', function (Blueprint $table) {
-            $table->id(); // Kolom ID
-            $table->unsignedBigInteger('user_id'); // Kolom untuk ID pengguna
-            $table->string('username'); // Kolom untuk username
-            $table->string('email'); // Kolom untuk email
-            $table->string('action'); // Kolom untuk tindakan yang dilakukan
-            $table->text('detail')->nullable(); // Kolom untuk detail tindakan
-            $table->timestamps(); // Kolom untuk created_at dan updated_at
-
-            // Menambahkan foreign key constraint jika diperlukan
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::create('audit_logs', function (Blueprint $table) {
+            $table->id(); // id, AUTO_INCREMENT
+            $table->string('doc_name', 255);
+            $table->string('user_name', 40);
+            $table->unsignedInteger('user_id')->default(0);
+            $table->string('user_email', 100)->default('ay.sasongko2@gmail.com');
+            $table->timestamp('date')->useCurrent();
+            $table->string('action', 255)->default('unknown');
+            $table->string('details', 255)->nullable();
+            $table->timestamps(); // created_at & updated_at with current timestamp default
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('audits');
+        Schema::dropIfExists('audit_logs');
     }
 }
-
