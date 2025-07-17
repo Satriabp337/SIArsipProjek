@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\LogsAudit;
+
 
 class UserController extends Controller
 {
+    use LogsAudit;
     public function index()
     {
         $users = User::latest()->paginate(10);
@@ -19,27 +22,15 @@ class UserController extends Controller
         return view('pengguna.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'role' => 'required|in:admin,user,operator',
-        ]);
+        $user = User::findOrFail($id);
 
-        $user->update([
-            'name' => $request->name,
-            'role' => $request->role,
-        ]);
+        $user->update($request->only('name', 'email'));
 
-        \App\Models\audit::create([
-            'user_id' => auth()->id(), // ID pengguna yang melakukan edit
-            'user_name' => auth()->user()->name, // Username pengguna
-            'user_email' => auth()->user()->email, // Email pengguna
-            'action' => 'Profile Edit', // Tindakan yang dilakukan
-            'details' => 'Edit user dengan ID: ' . $user->id . ' dengan nama: ' . $user->name, // Detail tindakan
-            ]);
+        $this->logAudit('edit user profile', '-', $user->name);
 
-        return redirect()->route('pengguna.index')->with('success', 'User berhasil diperbarui.');
+        return back()->with('success', 'Profil berhasil diubah.');
     }
 
     public function destroy(User $user)

@@ -50,8 +50,11 @@ Route::middleware(['auth'])->group(function () {
         return view('arsip');
     });
 
-    Route::get('/pengaturan', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/pengaturan', [SettingController::class, 'update'])->name('settings.update');
+        Route::get('/pengaturan', function () {
+        return view('pengaturan');
+    })->middleware('admin.operator');;
+
+
 
     Route::get('/audit', function () {
         return view('audit');

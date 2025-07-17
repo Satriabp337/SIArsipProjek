@@ -7,13 +7,17 @@ use Illuminate\Pagination\Paginator;
 use App\Models\Documents;
 use App\Models\Department;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use App\Traits\LogsAudit;
 
 class DocumentsController extends Controller
 {
+    use LogsAudit;
+
     public function store(Request $request)
     {
         // Validasi
@@ -128,7 +132,9 @@ class DocumentsController extends Controller
             'description'
         ]));
 
-        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diperbarui.');
+        $this->logAudit('edit user profile', '-', Auth::user()->name);
+
+        return back()->with('success', 'Dokumen berhasil diubah.');
     }
 
     public function download($id)

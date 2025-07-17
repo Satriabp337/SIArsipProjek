@@ -132,7 +132,7 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil!',
-                    text: '{{ session('success') }}',
+                    text: "{{ session('success') }}",
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'
                 });
@@ -145,7 +145,7 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
-                text: '{{ session('error') }}',
+                text: "{{ session('error') }}",
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'OK'
             });
