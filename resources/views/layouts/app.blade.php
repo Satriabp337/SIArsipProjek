@@ -10,101 +10,416 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <style>
-        body {
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-gray: #f8f9fa;
+            --dark-gray: #6c757d;
+            --sidebar-width: 280px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
+            overflow-x: hidden;
+        } */
+
+        /* Sidebar Styles */
+        #sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
             overflow-x: hidden;
         }
 
-        #sidebar {
-            transition: all 0.3s;
-            width: 250px;
-        }
-
         #sidebar.collapsed {
-            margin-left: -250px;
+            transform: translateX(-100%);
         }
 
+        /* Custom Scrollbar */
+        #sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #sidebar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        #sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Header Section */
+        .sidebar-header {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-header .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header .logo-section img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            object-fit: cover;
+        }
+
+        .sidebar-header .brand-info h5 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .sidebar-header .brand-info small {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+        }
+
+        /* Navigation Styles */
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.9) !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: white !important;
+            transform: translateX(5px);
+        }
+
+        .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white !important;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: white;
+        }
+
+        .nav-link i {
+            width: 20px;
+            margin-right: 0.75rem;
+            text-align: center;
+        }
+
+        /* Dropdown Styles */
+        .dropdown-toggle::after {
+            margin-left: auto;
+            transition: var(--transition);
+        }
+
+        .dropdown-toggle[aria-expanded="true"]::after {
+            transform: rotate(180deg);
+        }
+
+        .collapse .nav-link {
+            padding-left: 3rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .collapse .nav-link:hover {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* User Info Section */
+        .user-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .user-info small {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.8rem;
+        }
+
+        .user-info strong {
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main Content */
         #main-content {
-            transition: all 0.3s;
-            margin-left: 250px;
+            margin-left: var(--sidebar-width);
+            transition: var(--transition);
+            min-height: 100vh;
+            background-color: #f5f6fa;
         }
 
         #main-content.full {
             margin-left: 0;
         }
 
+        /* Header Bar */
+        .header-bar {
+            background: white;
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #e9ecef;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .toggle-btn {
+            background: linear-gradient(135deg, var(--secondary-color), #5dade2);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 2rem;
+        }
+
+        /* Responsive Design */
         @media (max-width: 768px) {
             #sidebar {
-                position: fixed;
-                z-index: 1000;
+                transform: translateX(-100%);
             }
+
+            #sidebar.show {
+                transform: translateX(0);
+            }
+
+            #main-content {
+                margin-left: 0;
+            }
+
+            .content-area {
+                padding: 1rem;
+            }
+
+            .header-bar {
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .sidebar-header {
+                padding: 1rem;
+            }
+
+            .sidebar-header .brand-info h5 {
+                font-size: 1rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+
+            .content-area {
+                padding: 0.75rem;
+            }
+        }
+
+        /* Animation for smooth transitions */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .nav-item {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        /* Utility Classes */
+        .shadow-sm {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .rounded-lg {
+            border-radius: 12px !important;
         }
     </style>
 </head>
 
 <body>
-    <!-- Sidebar -->
-    <div class="d-flex">
-        <nav id="sidebar" class="bg-light border-end p-3 d-flex flex-column vh-100 position-fixed">
-            <div class="mb-4">
-                <div class="d-flex align-items-center mb-3">
-                    <img src="{{ asset('images/diskop-logo.png') }}" alt="Logo Diskop" class="rounded-circle"
-                        style="width: 40px; height: 40px; object-fit: cover;">
-
-                    <div class="ms-2">
-                        <div class="fw-bold">Arsip Digital</div>
-                        <small class="text-muted">Dinas Koperasi & UKM</small>
+    <!-- Main Container -->
+    <div class="d-flex position-relative">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="d-flex flex-column">
+            <!-- Header Section -->
+            <div class="sidebar-header">
+                <div class="logo-section">
+                    <img src="{{ asset('images/diskop-logo.png') }}" alt="Logo Diskop">
+                    <div class="brand-info">
+                        <h5>Arsip Digital</h5>
+                        <small>Dinas Koperasi & UKM</small>
                     </div>
                 </div>
             </div>
 
+            <!-- Navigation Menu -->
+            <div class="sidebar-nav flex-grow-1">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="/dashboard" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
 
-            <ul class="nav nav-pills flex-column">
-                <li class="nav-item"><a href="/dashboard" class="nav-link text-dark"><i
-                            class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" 
+                           data-bs-toggle="collapse" 
+                           href="#arsipSubmenu" 
+                           role="button" 
+                           aria-expanded="{{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'true' : 'false' }}">
+                            <i class="bi bi-archive"></i>
+                            Arsip
+                        </a>
+                        <div class="collapse {{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'show' : '' }}" 
+                             id="arsipSubmenu">
+                            <ul class="nav flex-column">
+                                <li class="nav-item">
+                                    <a href="/documents" class="nav-link {{ request()->is('documents*') ? 'active' : '' }}">
+                                        <i class="bi bi-file-earmark-text"></i>
+                                        Daftar Dokumen
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/upload" class="nav-link {{ request()->is('upload') ? 'active' : '' }}">
+                                        <i class="bi bi-upload"></i>
+                                        Upload Dokumen
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/kategori" class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}">
+                                        <i class="bi bi-folder"></i>
+                                        Kategori
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link text-dark d-flex justify-content-between align-items-center"
-                        data-bs-toggle="collapse" href="#arsipSubmenu" role="button" aria-expanded="false">
-                        <span><i class="bi bi-archive me-2"></i> Arsip</span>
-                        <i class="bi bi-caret-down-fill small"></i>
-                    </a>
-                    <div class="collapse ps-3 {{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'show' : '' }}"
-                        id="arsipSubmenu">
-                        <ul class="nav flex-column mt-2">
-                            <li><a href="/documents" class="nav-link text-dark ps-4"><i
-                                        class="bi bi-file-earmark-text me-2"></i> Daftar Dokumen</a></li>
-                            <li><a href="/upload" class="nav-link text-dark ps-4"><i class="bi bi-upload me-2"></i>
-                                    Upload Dokumen</a></li>
-                            <li><a href="/kategori" class="nav-link text-dark ps-4"><i class="bi bi-folder me-2"></i>
-                                    Kategori</a></li>
-                        </ul>
-                    </div>
-                </li>
+                    <li class="nav-item">
+                        <a href="/laporan" class="nav-link {{ request()->is('laporan*') ? 'active' : '' }}">
+                            <i class="bi bi-bar-chart"></i>
+                            Laporan
+                        </a>
+                    </li>
 
-                <li class="nav-item"><a href="/laporan" class="nav-link text-dark"><i class="bi bi-bar-chart me-2"></i>
-                        Laporan</a></li>
-                <li class="nav-item"><a href="/pengguna" class="nav-link text-dark"><i class="bi bi-people me-2"></i>
-                        Pengguna</a></li>
-                <li class="nav-item"><a href="/pengaturan" class="nav-link text-dark"><i class="bi bi-gear me-2"></i>
-                        Pengaturan</a></li>
-            </ul>
+                    <li class="nav-item">
+                        <a href="/pengguna" class="nav-link {{ request()->is('pengguna*') ? 'active' : '' }}">
+                            <i class="bi bi-people"></i>
+                            Pengguna
+                        </a>
+                    </li>
 
-            <div class="mt-auto pt-3 border-top">
-                <small class="text-muted">Logged in as:<br><strong>Dr. Agus Setiawan (admin)</strong></small>
+                    <li class="nav-item">
+                        <a href="/pengaturan" class="nav-link {{ request()->is('pengaturan*') ? 'active' : '' }}">
+                            <i class="bi bi-gear"></i>
+                            Pengaturan
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- User Info Section -->
+            <div class="user-info">
+                <small>
+                    Logged in as:<br>
+                    <strong>Dr. Agus Setiawan</strong><br>
+                    <span class="badge bg-light text-dark mt-1">Admin</span>
+                </small>
             </div>
         </nav>
 
-        <!-- Main Content -->
-        <div id="main-content" class="flex-grow-1">
-            <!-- Toggle Button -->
-            <button class="btn btn-outline-primary m-3" id="sidebarToggle">
-                <i class="bi bi-list"></i> Menu
-            </button>
+        <!-- Main Content Area -->
+        <main id="main-content" class="flex-grow-1">
+            <!-- Header Bar -->
+            <div class="header-bar d-flex align-items-center">
+                <button class="toggle-btn" id="sidebarToggle">
+                    <i class="bi bi-list me-2"></i>
+                    Menu
+                </button>
+            </div>
 
-            <div class="container-fluid px-4">
+            <!-- Content Area -->
+            <div class="content-area">
                 @yield('content')
             </div>
-        </div>
+        </main>
     </div>
 
     <!-- Scripts -->
@@ -114,10 +429,54 @@
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.getElementById('main-content');
             const toggleBtn = document.getElementById('sidebarToggle');
+            const isMobile = window.innerWidth <= 768;
 
+            // Initialize sidebar state for mobile
+            if (isMobile) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('full');
+            }
+
+            // Toggle sidebar
             toggleBtn.addEventListener('click', function () {
-                sidebar.classList.toggle('collapsed');
-                mainContent.classList.toggle('full');
+                if (isMobile) {
+                    sidebar.classList.toggle('show');
+                } else {
+                    sidebar.classList.toggle('collapsed');
+                    mainContent.classList.toggle('full');
+                }
+            });
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function (event) {
+                if (isMobile && 
+                    !sidebar.contains(event.target) && 
+                    !toggleBtn.contains(event.target) &&
+                    sidebar.classList.contains('show')) {
+                    sidebar.classList.remove('show');
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function () {
+                const nowMobile = window.innerWidth <= 768;
+                if (nowMobile !== isMobile) {
+                    location.reload(); // Simple solution for resize handling
+                }
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('.nav-link[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
             });
         });
     </script>
@@ -125,16 +484,18 @@
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <!-- Notifikasi flash untuk success -->
+    <!-- Flash Messages -->
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 Swal.fire({
                     icon: 'success',
                     title: 'Berhasil!',
-                    text: "{{ session('success') }}",
+                    text: '{{ session('success') }}',
                     confirmButtonColor: '#3085d6',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    timer: 3000,
+                    timerProgressBar: true
                 });
             });
         </script>
@@ -145,13 +506,12 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal!',
-                text: "{{ session('error') }}",
+                text: '{{ session('error') }}',
                 confirmButtonColor: '#d33',
                 confirmButtonText: 'OK'
             });
         </script>
     @endif
-
 
     @stack('script')
 </body>
