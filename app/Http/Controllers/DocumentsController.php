@@ -141,7 +141,7 @@ class DocumentsController extends Controller
 
     public function previewExcel($filename)
     {
-        $filePath = storage_path('public/storage/arsip' . $filename); // Sesuaikan path kamu
+        $filePath = storage_path('app/public/' . $filename); // Sesuaikan path kamu
 
         if (!file_exists($filePath)) {
             abort(404, 'File not found');

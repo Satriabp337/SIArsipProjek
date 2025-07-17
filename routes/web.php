@@ -68,7 +68,7 @@ Route::get('/documents/file/{filename}', [DocumentsController::class, 'serveFile
 
 Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
 Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
-Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->name('documents.preview.excel');
+Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->where('filename', '.*')->name('documents.preview.excel');
 
 Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 

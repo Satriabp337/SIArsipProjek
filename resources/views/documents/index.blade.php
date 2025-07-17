@@ -38,8 +38,6 @@
             </a>
         </div>
     </form>
-    <p class="text-muted">Menampilkan 3 dari 3 dokumen</p>
-
     <div class="row g-4">
         @if (isset($documents) && $documents->count())
         @foreach ($documents as $document)
