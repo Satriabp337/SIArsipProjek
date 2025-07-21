@@ -25,58 +25,69 @@
                 <div class="card-body">
                     <!-- Pengaturan Akses Pengguna -->
                     <section id="pengaturan-akses">
-                        <h5 class="mb-4">Pengaturan Akses Pengguna</h5>
-                        <form>
-                            <div class="form-group">
-                                <label>Kontrol Akses Dokumen</label>
-                                <select class="form-control">
-                                    <option>Publik - Semua pengguna dapat melihat</option>
-                                    <option>Internal - Hanya anggota organisasi</option>
-                                    <option>Privat - Hanya pengguna tertentu</option>
-                                </select>
-                                <small class="form-text text-muted">Tentukan siapa yang dapat melihat dokumen dalam sistem</small>
-                            </div>
+    <h5 class="mb-4">Pengaturan Akses Pengguna</h5>
 
-                            <div class="form-group">
-                                <label>Manajemen Peran Pengguna</label>
-                                <table class="table table-sm">
-                                    <thead>
-                                        <tr>
-                                            <th>Peran</th>
-                                            <th>Lihat</th>
-                                            <th>Edit</th>
-                                            <th>Hapus</th>
-                                            <th>Bagikan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Admin</td>
-                                            <td><input type="checkbox" checked disabled></td>
-                                            <td><input type="checkbox" checked disabled></td>
-                                            <td><input type="checkbox" checked disabled></td>
-                                            <td><input type="checkbox" checked disabled></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Operator</td>
-                                            <td><input type="checkbox" checked></td>
-                                            <td><input type="checkbox" checked></td>
-                                            <td><input type="checkbox"></td>
-                                            <td><input type="checkbox" checked></td>
-                                        </tr>
-                                        <tr>
-                                            <td>User</td>
-                                            <td><input type="checkbox" checked></td>
-                                            <td><input type="checkbox"></td>
-                                            <td><input type="checkbox"></td>
-                                            <td><input type="checkbox"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Simpan Pengaturan Akses</button>
-                        </form>
-                    </section>
+    {{-- Tampilkan notifikasi sukses jika ada --}}
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <form action="{{ route('pengaturan.akses.update') }}" method="POST">
+        @csrf
+
+        {{-- Kontrol Akses Dokumen --}}
+        <div class="form-group">
+            <label>Kontrol Akses Dokumen</label>
+            <select class="form-control" name="akses_dokumen">
+                <option value="publik">Publik - Semua pengguna dapat melihat</option>
+                <option value="internal">Internal - Hanya anggota organisasi</option>
+                <option value="privat">Privat - Hanya pengguna tertentu</option>
+            </select>
+            <small class="form-text text-muted">Tentukan siapa yang dapat melihat dokumen dalam sistem</small>
+        </div>
+
+        {{-- Tabel Hak Akses --}}
+        <div class="form-group">
+            <label>Manajemen Peran Pengguna</label>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Peran</th>
+                        @foreach ($permissions as $permission)
+                            <th>{{ ucfirst($permission->label) }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($roles as $role)
+                        <tr>
+                            <td>{{ ucfirst($role->name) }}</td>
+                            @foreach ($permissions as $permission)
+                                <td>
+                                    @if($role->name === 'admin')
+                                        {{-- Admin selalu memiliki semua hak akses (tapi tidak bisa diubah) --}}
+                                        <input type="checkbox" checked disabled>
+                                        <input type="hidden" name="permissions[{{ $role->id }}][]" value="{{ $permission->id }}">
+                                    @else
+                                        <input type="checkbox"
+                                               name="permissions[{{ $role->id }}][]"
+                                               value="{{ $permission->id }}"
+                                               {{ $role->permissions->contains($permission->id) ? 'checked' : '' }}>
+                                    @endif
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Simpan Pengaturan Akses</button>
+    </form>
+</section>
+
 
                     <hr class="my-5">
 
@@ -84,19 +95,19 @@
                     <section id="keamanan-data">
                         <h5 class="mb-4">Keamanan Data</h5>
                         <form>
-                        <h3 class="font-medium mb-2">Audit Log</h3>
-                        <div class="border rounded-lg p-4 mb-3">
-                            <div class="d-flex justify-content-between mb-2">
-                                <span><strong>Aktivitas Terakhir:</strong> Edit dokumen "Laporan Tahunan"</span>
-                                <span class="text-sm text-gray-500">2 jam yang lalu</span>
+                            <h3 class="font-medium mb-2">Audit Log</h3>
+                            <div class="border rounded-lg p-4 mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span><strong>Aktivitas Terakhir:</strong> Edit dokumen "Laporan Tahunan"</span>
+                                    <span class="text-sm text-gray-500">2 jam yang lalu</span>
+                                </div>
+                                <hr class="my-5">
+                                <div class="d-flex justify-content-between">
+                                    <span><strong>Diproses oleh:</strong> editor@example.com</span>
+                                    <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat detail</a>
+                                </div>
                             </div>
-                                                <hr class="my-5">
-                            <div class="d-flex justify-content-between">
-                                <span><strong>Diproses oleh:</strong> editor@example.com</span>
-                                <button class="btn btn-primary">Lihat detail</button>
-                            </div>
-                        </div>
-                        <button class="btn btn-primary">Lihat Log Lengkap</button>
+                            <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat Log Lengkap</a>
                         </form>
                     </section>
 
@@ -114,7 +125,6 @@
                                     <option>Mingguan</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <label>Jenis Notifikasi</label>
                                 <div class="custom-control custom-checkbox">
@@ -130,7 +140,6 @@
                                     <label class="custom-control-label" for="notifMobile">Mobile Push</label>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <label>Event yang Akan Dikirimkan Notifikasi</label>
                                 <div class="custom-control custom-checkbox">
@@ -167,7 +176,6 @@
                                 </div>
                                 <small class="form-text text-muted">65% dari 10 GB digunakan</small>
                             </div>
-
                             <div class="form-group">
                                 <label>Lokasi Penyimpanan</label>
                                 <select class="form-control">
@@ -176,7 +184,6 @@
                                     <option>Google Cloud Storage</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="autoBackup" checked>
@@ -184,7 +191,6 @@
                                 </div>
                                 <small class="form-text text-muted">Backup harian akan dilakukan setiap pukul 02:00 WIB</small>
                             </div>
-
                             <div class="form-group">
                                 <button class="btn btn-sm btn-outline-danger" type="button" data-toggle="modal" data-target="#cleanupModal">
                                     Bersihkan File Sementara
@@ -210,7 +216,6 @@
                                 </select>
                                 <small class="form-text text-muted">Versi dokumen lama akan membantu dalam pemulihan data</small>
                             </div>
-
                             <div class="form-group">
                                 <label>Frekuensi Penyimpanan Versi</label>
                                 <select class="form-control">
@@ -219,7 +224,6 @@
                                     <option>Setiap 10 perubahan</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <div class="custom-control custom-switch">
                                     <input type="checkbox" class="custom-control-input" id="autoVersion" checked>

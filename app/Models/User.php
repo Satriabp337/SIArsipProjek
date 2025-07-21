@@ -43,4 +43,23 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+public function role()
+    {
+        // Menggunakan strtolower untuk mencocokkan dengan data di database
+        return $this->belongsTo(Role::class, 'role', 'name')
+            ->withDefault(['name' => strtolower($this->role)]);
+    }
+
+    public function hasPermission($permissionName)
+    {
+        // Pastikan role dan permissions ada sebelum mengecek
+        if (!$this->role || !$this->role->permissions) {
+            return false;
+        }
+        return $this->role->permissions->contains('name', $permissionName);
+    }
+
+
+
 }

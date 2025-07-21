@@ -387,7 +387,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="/pengaturan" class="nav-link {{ request()->is('pengaturan*') ? 'active' : '' }}">
+                        <a href="/pengaturan/akses" class="nav-link {{ request()->is('pengaturan*') ? 'active' : '' }}">
                             <i class="bi bi-gear"></i>
                             Pengaturan
                         </a>

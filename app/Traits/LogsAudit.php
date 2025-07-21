@@ -15,6 +15,7 @@ trait LogsAudit
             'action' => $action,
             'doc_name' => $docName,
             'user_name' => $user->name,
+            'user_id' => $user->id,
             'user_email' => $user->email,
             'details' => $details,
         ]);

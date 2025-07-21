@@ -26,9 +26,9 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $user->update($request->only('name', 'email'));
+        $user->update($request->only(['name', 'role']));
 
-        $this->logAudit('edit user profile', '-', $user->name);
+        $this->logAudit('edit user profile', '-', "Mengubah role " . $user->name . " menjadi " . $user->role);
 
         return back()->with('success', 'Profil berhasil diubah.');
     }
