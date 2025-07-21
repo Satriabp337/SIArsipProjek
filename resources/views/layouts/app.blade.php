@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <style>
         :root {
-            --primary-color: #2c3e50;
+            --primary-color: 2c3e50;
             --secondary-color: #3498db;
             --accent-color: #e74c3c;
             --light-gray: #f8f9fa;
@@ -264,6 +264,15 @@
             .header-bar {
                 padding: 0.75rem 1rem;
             }
+
+            .user-greeting {
+                display: none;
+            }
+
+            .btn-outline-danger {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
         }
 
         @media (max-width: 576px) {
@@ -291,6 +300,7 @@
                 opacity: 0;
                 transform: translateX(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -301,6 +311,23 @@
             animation: slideIn 0.3s ease-out;
         }
 
+        .user-greeting {
+            color: #5a5c69;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .btn-outline-danger {
+            border-width: 1.5px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+        }
+
         /* Utility Classes */
         .shadow-sm {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
@@ -308,7 +335,8 @@
 
         .rounded-lg {
             border-radius: 12px !important;
-        }
+            #
+        } /* End of style block */
     </style>
 </head>
 
@@ -339,19 +367,17 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" 
-                           data-bs-toggle="collapse" 
-                           href="#arsipSubmenu" 
-                           role="button" 
-                           aria-expanded="{{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'true' : 'false' }}">
+                        <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#arsipSubmenu" role="button"
+                            aria-expanded="{{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'true' : 'false' }}">
                             <i class="bi bi-archive"></i>
                             Arsip
                         </a>
-                        <div class="collapse {{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'show' : '' }}" 
-                             id="arsipSubmenu">
+                        <div class="collapse {{ request()->is('documents*') || request()->is('upload') || request()->is('kategori*') ? 'show' : '' }}"
+                            id="arsipSubmenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item">
-                                    <a href="/documents" class="nav-link {{ request()->is('documents*') ? 'active' : '' }}">
+                                    <a href="/documents"
+                                        class="nav-link {{ request()->is('documents*') ? 'active' : '' }}">
                                         <i class="bi bi-file-earmark-text"></i>
                                         Daftar Dokumen
                                     </a>
@@ -363,7 +389,8 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/kategori" class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}">
+                                    <a href="/kategori"
+                                        class="nav-link {{ request()->is('kategori*') ? 'active' : '' }}">
                                         <i class="bi bi-folder"></i>
                                         Kategori
                                     </a>
@@ -408,14 +435,32 @@
         <!-- Main Content Area -->
         <main id="main-content" class="flex-grow-1">
             <!-- Header Bar -->
-            <div class="header-bar d-flex align-items-center">
+            <div class="header-bar d-flex align-items-center justify-content-between">
+                <!-- Menu Toggle Button -->
                 <button class="toggle-btn" id="sidebarToggle">
                     <i class="bi bi-list me-2"></i>
                     Menu
                 </button>
-            </div>
 
-            <!-- Content Area -->
+                <!-- User Info & Logout -->
+                <div class="d-flex align-items-center">
+                    <!-- User Greeting -->
+                    <span class="user-greeting me-3">
+                        <i class="bi bi-person-circle me-1"></i>
+                        Halo, {{ Auth::user()->name }}
+                    </span>
+
+                    <!-- Logout Button -->
+                    <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-danger btn-sm"
+                            onclick="return confirm('Yakin ingin logout?')">
+                            <i class="bi bi-box-arrow-right me-1"></i>
+                            Logout
+                        </button>
+                    </form>
+                </div>
+            </div <!-- Content Area -->
             <div class="content-area">
                 @yield('content')
             </div>
@@ -449,8 +494,8 @@
 
             // Close sidebar when clicking outside on mobile
             document.addEventListener('click', function (event) {
-                if (isMobile && 
-                    !sidebar.contains(event.target) && 
+                if (isMobile &&
+                    !sidebar.contains(event.target) &&
                     !toggleBtn.contains(event.target) &&
                     sidebar.classList.contains('show')) {
                     sidebar.classList.remove('show');

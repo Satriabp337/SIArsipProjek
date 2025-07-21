@@ -98,4 +98,13 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
+});
+
+Route::middleware(['auth', 'role:user'])->group(function () {
+    Route::get('/user/dashboard', [ DashboardController::class, 'index']);
+});
+
+
 require __DIR__.'/auth.php';

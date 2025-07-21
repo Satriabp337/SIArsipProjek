@@ -14,7 +14,7 @@ class CategoriesSeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = ['Surat Masuk', 'Surat Keluar', 'Surat Keterangan', 'Surat Tugas'];
+        $categories = ['Surat Masuk', 'Surat Keluar', 'Surat Keputusan', 'Surat Tugas'];
 
         foreach ($categories as $cat) {
             Category::create(['name' => $cat]);

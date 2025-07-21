@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('category_id');
             $table->string('sub_category')->nullable();
-            $table->unsignedBigInteger('department_id');
-            $table->enum('access_level', ['Public', 'Internal', 'Confidential']);
             $table->text('description')->nullable();
             $table->string('tags')->nullable(); // comma-separated
             $table->string('filename'); // disimpan di storage
@@ -28,8 +26,7 @@ return new class extends Migration
 
             // Foreign key (opsional bisa pakai cascade or restrict)
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('department_id')->references('id')->on('departments')->onDelete('cascade');
-        });
+            });
     }
 
     /**

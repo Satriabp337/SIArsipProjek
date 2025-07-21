@@ -2,7 +2,6 @@
 @section('content')
 <!-- Main Content -->
 <div class="container py-4">
-    @include('layouts.navbar')
     <form method="GET" class="row g-3 align-items-end mb-4">
         <div class="col-md-4">
             <input type="text" name="search" class="form-control" placeholder="Masukkan kata kunci..."
@@ -20,16 +19,6 @@
             </select>
         </div>
 
-        <div class="col-md-3">
-            <select name="department_id" class="form-select">
-                <option value="">Semua Departemen</option>
-                @foreach($departments as $department)
-                <option value="{{ $department->id }}" {{ request('department_id') == $department->id ? 'selected' : '' }}>
-                    {{ $department->name }}
-                </option>
-                @endforeach
-            </select>
-        </div>
 
         <div class="col-md-2 d-flex gap-2">
             <button class="btn btn-primary w-100" type="submit"><i class="bi bi-funnel"></i> Filter</button>
@@ -69,10 +58,6 @@
                     <p class="card-text">{{ $document->description }}</p>
                     <div class="mb-3">
                         <span class="badge bg-secondary">{{ $document->category ? $document->category->name : 'Uncategorized' }}</span>
-                    </div>
-                    <div class="d-flex align-items-center text-muted small mb-2">
-                        <i class="bi bi-building me-2"></i>
-                        <span>{{ $document->department ? $document->department->name : 'No Department' }}</span>
                     </div>
                     <div class="d-flex align-items-center text-muted small mb-2">
                         <i class="bi bi-calendar me-2"></i>

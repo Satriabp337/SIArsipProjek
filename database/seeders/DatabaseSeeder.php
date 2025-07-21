@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Department;
 use Database\seeders\DepartmentsSeeder;
 use Database\Seeders\CategoriesSeeder;
+use Database\Seeders\UsersSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +25,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DepartmentSeeder::class);
         $this->call(CategoriesSeeder::class);
+        $this->call(UsersTableSeeder::class);
     }
 }
 
