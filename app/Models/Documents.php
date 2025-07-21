@@ -13,8 +13,8 @@ class Documents extends Model
         'title',
         'category_id',
         'sub_category',
-        'department_id',
-        'access_level',
+        // 'department_id',
+        // 'access_level',
         'description',
         'tags',
         'filename',
@@ -28,18 +28,18 @@ class Documents extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
+    // public function department()
+    // {
+    //     return $this->belongsTo(Department::class);
+    // }
 
     public function category()
     {
         return $this->belongsTo(\App\Models\Category::class, 'category_id');
     }
 
-    public function departments()
-    {
-        return $this->belongsTo(\App\Models\Department::class, 'department_id');
-    }
+    // public function departments()
+    // {
+    //     return $this->belongsTo(\App\Models\Department::class, 'department_id');
+    // }
 }

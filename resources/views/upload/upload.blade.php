@@ -1,10 +1,10 @@
 @extends('layouts.app')
+
 @section('content')
-    <div class="container-fluid py-4">
-        <div>
-            <h4 class="mb-1">Upload Dokumen</h4>
-            <div class="text-muted">Unggah dokumen baru ke dalam sistem arsip</div>
-        </div>
+<div class="container-fluid py-4">
+    <div class="mb-4">
+        <h4 class="mb-1">Upload Dokumen</h4>
+        <div class="text-muted">Unggah dokumen baru ke dalam sistem arsip</div>
     </div>
 
     <!-- Upload Form Start -->
@@ -44,29 +44,9 @@
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-md-6 mb-3 mb-md-0">
+                    <div class="col-md-6">
                         <label class="form-label">Sub Kategori</label>
                         <input type="text" name="sub_category" class="form-control" placeholder="Masukkan sub kategori">
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Departemen <span class="text-danger">*</span></label>
-                        <select name="department_id" class="form-select" required>
-                            <option value="">Pilih departemen</option>
-                            @foreach($departments as $dept)
-                            <option value="{{ $dept->id }}">{{ $dept->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label class="form-label">Tingkat Akses <span class="text-danger">*</span></label>
-                        <select name="access_level" class="form-select" required>
-                            <option value="Internal" selected>Internal</option>
-                            <option value="Public">Publik</option>
-                            <option value="Confidential">Rahasia</option>
-                        </select>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Tags (pisahkan dengan koma)</label>
@@ -86,4 +66,5 @@
             </div>
         </div>
     </form>
+</div>
 @endsection

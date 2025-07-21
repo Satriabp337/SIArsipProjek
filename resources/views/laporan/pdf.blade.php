@@ -115,28 +115,6 @@
         </table>
     </div>
 
-    <div class="section">
-        <h3>Dokumen per Departemen</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Departemen</th>
-                    <th>Jumlah Dokumen</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($documentsPerDepartment as $index => $dept)
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $dept->name }}</td>
-                    <td>{{ $dept->documents_count }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-
     <!-- Tanda Tangan -->
     <div class="signature">
         <p>Palembang, {{ \Carbon\Carbon::now()->translatedFormat('d F Y') }}</p>

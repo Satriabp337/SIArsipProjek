@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use App\Models\Documents;
-use App\Models\Department;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,8 +19,7 @@ class DocumentsController extends Controller
         $request->validate([
             'title' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'department_id' => 'required|exists:departments,id',
-            'access_level' => 'required|in:Public,Internal,Confidential',
+            // 'access_level' => 'required|in:Public,Internal,Confidential',
             'file' => 'required|file|max:51200|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx,jpg,jpeg,png',
         ]);
 
@@ -34,8 +32,7 @@ class DocumentsController extends Controller
             'title' => $request->title,
             'category_id' => $request->category_id,
             'sub_category' => $request->sub_category,
-            'department_id' => $request->department_id,
-            'access_level' => $request->access_level,
+            // 'access_level' => $request->access_level,
             'description' => $request->description,
             'tags' => $request->tags,
             'filename' => $path,
@@ -49,41 +46,34 @@ class DocumentsController extends Controller
 
     public function create()
     {
-        $departments = Department::all();
         $categories = Category::all();
-
-        return view('upload.upload', compact('departments', 'categories'));
+        return view('upload.upload', compact('categories'));
     }
 
     public function index(Request $request)
     {
-        $query = Documents::with(['category', 'department']);
+        $query = Documents::with(['category']);
 
         if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%')
-                ->orWhere('tags', 'like', '%' . $request->search . '%');
+            $query->where(function ($q) use ($request) {
+                $q->where('title', 'like', '%' . $request->search . '%')
+                  ->orWhere('tags', 'like', '%' . $request->search . '%');
+            });
         }
 
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        if ($request->filled('department_id')) {
-            $query->where('department_id', $request->department_id);
-        }
-
         $documents = $query->latest()->paginate(6);
         $categories = Category::all();
-        $departments = Department::all();
 
-        return view('documents.index', compact('documents', 'categories', 'departments'));
+        return view('documents.index', compact('documents', 'categories'));
     }
-
 
     public function getFile($filename, Request $request)
     {
         $document = Documents::where('filename', $filename)->firstOrFail();
-
         $path = storage_path('app/public/' . $filename);
 
         if (!file_exists($path)) {
@@ -102,9 +92,8 @@ class DocumentsController extends Controller
     {
         $document = Documents::findOrFail($id);
         $categories = Category::all();
-        $departments = Department::all();
 
-        return view('documents.edit', compact('document', 'categories', 'departments'));
+        return view('documents.edit', compact('document', 'categories'));
     }
 
     public function update(Request $request, $id)
@@ -113,19 +102,17 @@ class DocumentsController extends Controller
 
         $request->validate([
             'title' => 'required',
-            'category_id' => 'required',
-            'department_id' => 'required',
-            'access_level' => 'required|in:Public,Internal,Confidential',
+            'category_id' => 'required|exists:categories,id',
+            // 'access_level' => 'required|in:Public,Internal,Confidential',
         ]);
 
         $document->update($request->only([
             'title',
             'category_id',
             'sub_category',
-            'department_id',
-            'access_level',
+            // 'access_level',
             'tags',
-            'description'
+            'description',
         ]));
 
         return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diperbarui.');
@@ -141,7 +128,7 @@ class DocumentsController extends Controller
 
     public function previewExcel($filename)
     {
-        $filePath = storage_path('app/public/' . $filename); // Sesuaikan path kamu
+        $filePath = storage_path('app/public/' . $filename);
 
         if (!file_exists($filePath)) {
             abort(404, 'File not found');
@@ -156,6 +143,6 @@ class DocumentsController extends Controller
 
     public function boot()
     {
-        Paginator::useBootstrapFive(); // atau useBootstrapFour jika versi 4
+        Paginator::useBootstrapFive(); // Atau useBootstrapFour sesuai versi
     }
 }
