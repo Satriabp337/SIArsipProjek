@@ -17,6 +17,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\PengaturanController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,15 +56,18 @@ Route::middleware(['auth'])->group(function () {
         return view('pengaturan');
     })->middleware('admin.operator');;
 
-
+    Route::middleware(['auth', 'admin.operator'])->group(function () {
+    Route::get('/pengaturan/akses', [PengaturanController::class, 'index'])->name('pengaturan.akses');
+    Route::post('/pengaturan/akses', [PengaturanController::class, 'update'])->name('pengaturan.akses.update');
+});
 
     Route::get('/audit', function () {
         return view('audit');
-    });
+    })->middleware('admin.operator');
     Route::get('/audit-logs', [AuditController::class, 'showAuditLogs'])->name('audit.logs');
 
     Route::get('/upload', [DocumentsController::class, 'create'])->name('documents.create');
-    Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store');
+    Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store')->middleware(['auth', 'permission:upload']);
 
     Route::get('/documents', [DocumentsController::class, 'index'])->name('documents.index');
     Route::get('/documents/{document}/edit', [DocumentsController::class, 'edit'])->name('documents.edit');
@@ -77,6 +82,20 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
     Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
+
+
+    //tes kode cek akses
+
+    Route::get('/cek-akses', function () {
+    $user = \Illuminate\Support\Facades\Auth::user();
+
+    dd([
+        'user' => $user->name,
+        'role' => $user->role,
+        'has_upload_permission' => $user->hasPermission('upload'),
+    ]);
+})->middleware('auth');
+
 });
 
 require __DIR__.'/auth.php';
