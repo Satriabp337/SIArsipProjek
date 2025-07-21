@@ -4,11 +4,11 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAuditLogsTable extends Migration
+return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('audit_logs', function (Blueprint $table) {
+        Schema::create('audits', function (Blueprint $table) {
             $table->id(); // id, AUTO_INCREMENT
             $table->string('doc_name', 255);
             $table->string('user_name', 40);
@@ -25,4 +25,4 @@ class CreateAuditLogsTable extends Migration
     {
         Schema::dropIfExists('audit_logs');
     }
-}
+};
