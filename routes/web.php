@@ -19,6 +19,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\PengaturanController;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +39,8 @@ Route::get('/', function () {
 // Semua route penting dibungkus dalam middleware 'auth'
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+
 
     Route::get('/kategori', [CategoryController::class, 'index'])->name('kategori.index');
     Route::get('/kategori/{category}', [CategoryController::class, 'show'])->name('kategori.show');
@@ -87,24 +89,19 @@ Route::middleware(['auth'])->group(function () {
     //tes kode cek akses
 
     Route::get('/cek-akses', function () {
-    $user = \Illuminate\Support\Facades\Auth::user();
+    /** @var User|null $user */
+    $user = Auth::user();
+        dd([
+            'user' => $user->name,
+            'role' => $user->role,
+            'has_upload_permission' => $user->hasPermission('upload'),
+        ]);
 
-    dd([
-        'user' => $user->name,
-        'role' => $user->role,
-        'has_upload_permission' => $user->hasPermission('upload'),
-    ]);
-})->middleware('auth');
+    })->middleware('auth');
 
 });
 
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index']);
-});
 
-Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/user/dashboard', [ DashboardController::class, 'index']);
-});
 
 
 require __DIR__.'/auth.php';

@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Models\Role;
+
 
 class RegisteredUserController extends Controller
 {
@@ -36,10 +38,16 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $defaultRoleId = Role::where('name', 'user')->value('id');
+
+        if (!$defaultRoleId) {
+            abort(500, 'Role "user" tidak ditemukan.');
+        }
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_id' => $defaultRoleId,
         ]);
 
         event(new Registered($user));

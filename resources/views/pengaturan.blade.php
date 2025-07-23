@@ -93,23 +93,38 @@
 
                     <!-- Pengaturan Keamanan Data -->
                     <section id="keamanan-data">
-                        <h5 class="mb-4">Keamanan Data</h5>
-                        <form>
-                            <h3 class="font-medium mb-2">Audit Log</h3>
-                            <div class="border rounded-lg p-4 mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span><strong>Aktivitas Terakhir:</strong> Edit dokumen "Laporan Tahunan"</span>
-                                    <span class="text-sm text-gray-500">2 jam yang lalu</span>
-                                </div>
-                                <hr class="my-5">
-                                <div class="d-flex justify-content-between">
-                                    <span><strong>Diproses oleh:</strong> editor@example.com</span>
-                                    <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat detail</a>
-                                </div>
-                            </div>
-                            <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat Log Lengkap</a>
-                        </form>
-                    </section>
+    <h5 class="mb-4">Keamanan Data</h5>
+    <form>
+        <h3 class="font-medium mb-2">Audit Log</h3>
+
+        @if($latestAudit)
+        <div class="border rounded-lg p-4 mb-3">
+            <div class="d-flex justify-content-between mb-2">
+                <span>
+                    <strong>Aktivitas Terakhir:</strong>
+                    {{ ucfirst($latestAudit->details) }}
+                </span>
+                <span class="text-sm text-gray-500">
+                    {{ \Carbon\Carbon::parse($latestAudit->date)->diffForHumans() }}
+                </span>
+            </div>
+            <hr class="my-5">
+            <div class="d-flex justify-content-between">
+                <span>
+                    <strong>Diproses oleh:</strong> {{ $latestAudit->user_email }}
+                </span>
+                <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat detail</a>
+            </div>
+        </div>
+        @else
+        <div class="border rounded-lg p-4 mb-3 text-muted">
+            Tidak ada aktivitas tercatat dalam audit log.
+        </div>
+        @endif
+
+        <a href="{{ url('/audit') }}" class="btn btn-primary">Lihat Log Lengkap</a>
+    </form>
+</section>
 
                     <hr class="my-5">
 

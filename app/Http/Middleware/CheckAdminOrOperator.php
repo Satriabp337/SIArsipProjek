@@ -11,9 +11,14 @@ class CheckAdminOrOperator
 {
     public function handle($request, Closure $next)
     {
-        if (Auth::check() && in_array(Auth::user()->role, ['admin', 'operator'])) {
+        $user = Auth::user();
+        
+        if ($user && in_array(strtolower($user->role->name ?? ''), ['admin', 'operator'])) {
             return $next($request);
-        } else {abort(403, 'Unauthorized');}
+        }
+
+        abort(403, 'Unauthorized');
     }
 }
+
 

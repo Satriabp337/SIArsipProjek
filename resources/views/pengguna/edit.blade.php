@@ -13,13 +13,15 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Peran</label>
-            <select name="role" class="form-select" required>
-                <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
-                <option value="operator" {{ $user->role === 'operator' ? 'selected' : '' }}>Operator</option>
-                <option value="user" {{ $user->role === 'user' ? 'selected' : '' }}>User</option>
-            </select>
-        </div>
+    <label class="form-label">Peran</label>
+    <select name="role_id" class="form-select" required>
+        @foreach($roles as $role)
+            <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
+                {{ ucfirst($role->name) }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">Batal</a>

@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\LogsAudit;
+use App\Models\Role;
+
 
 
 class UserController extends Controller
@@ -19,23 +21,32 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('pengguna.edit', compact('user'));
+        $roles = Role::all();
+        return view('pengguna.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
 
-        $user->update($request->only(['name', 'role']));
+        $user->update([
+        'name' => $request->name,
+        'role_id' => $request->role_id,
+    ]);
+        $user->refresh();
 
-        $this->logAudit('edit user profile', '-', "Mengubah role " . $user->name . " menjadi " . $user->role);
+        $this->logAudit('edit user profile', '-', "Mengubah role " . $user->name . " menjadi " . $user->role->name ?? 'user');
 
         return back()->with('success', 'Profil berhasil diubah.');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user, Request $request)
     {
         $user->delete();
+
+        $user->update($request->only(['name', 'role']));
+
+        $this->logAudit('delete user profile', '-', "Menghapus akun " . $user->name . " .");
         return redirect()->route('pengguna.index')->with('success', 'User berhasil dihapus.');
     }
 }

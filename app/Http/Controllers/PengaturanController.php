@@ -6,14 +6,22 @@ use App\Models\Role;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Audit;
 class PengaturanController extends Controller
 {
+    
+    public function pengaturan()
+    {
+        $latestAudit = Audit::orderBy('date', 'desc')->first();
+        return view('pengaturan', compact('latestAudit'));
+    }
+
     public function index()
     {
         $roles = Role::with('permissions')->get();
         $permissions = Permission::all();
-
-        return view('pengaturan', compact('roles', 'permissions'));
+        $latestAudit = Audit::orderBy('date', 'desc')->first();
+        return view('pengaturan', compact('roles', 'permissions', 'latestAudit'));
     }
 
     public function update(Request $request)

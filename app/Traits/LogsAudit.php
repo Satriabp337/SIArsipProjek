@@ -13,6 +13,7 @@ trait LogsAudit
 
         audit::create([
             'action' => $action,
+            'doc_id' => $user->id,
             'doc_name' => $docName,
             'user_name' => $user->name,
             'user_id' => $user->id,

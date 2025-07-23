@@ -21,7 +21,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
     ];
 
     /**
@@ -44,22 +44,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-public function role()
+        public function role()
     {
-        // Menggunakan strtolower untuk mencocokkan dengan data di database
-        return $this->belongsTo(Role::class, 'role', 'name')
-            ->withDefault(['name' => strtolower($this->role)]);
+        return $this->belongsTo(Role::class,  'role_id');
     }
 
     public function hasPermission($permissionName)
     {
-        // Pastikan role dan permissions ada sebelum mengecek
-        if (!$this->role || !$this->role->permissions) {
+        if (!$this->role) {
             return false;
         }
         return $this->role->permissions->contains('name', $permissionName);
     }
-
 
 
 }
