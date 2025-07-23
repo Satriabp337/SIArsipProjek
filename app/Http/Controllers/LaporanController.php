@@ -16,68 +16,113 @@ class LaporanController extends Controller
     {
         $query = Documents::query();
 
-        if (request()->start && request()->end) {
-            $query->whereBetween('created_at', [request()->start, request()->end]);
-        }
+        $query->whereBetween('created_at', [request()->input('start'), request()->input('end')]);
+
 
         $filteredDocs = $query->get();
 
         return view('laporan.index', [
             'totalDocuments' => $filteredDocs->count(),
             'totalDownloads' => $filteredDocs->sum('download_count'),
-            'documentsPerCategory' => Category::withCount(['documents' => function ($q) {
-                if (request()->start && request()->end) {
-                    $q->whereBetween('created_at', [request()->start, request()->end]);
+            'documentsPerCategory' => Category::withCount([
+                'documents' => function ($q) {
+                    if (request()->filled(['start', 'end'])) {
+                        $q->whereBetween('created_at', [request('start'), request('end')]);
+                    }
+
                 }
-            }])->get(),
+            ])->get(),
             'mostDownloaded' => $filteredDocs->sortByDesc('download_count')->take(5),
             'latestDocuments' => $filteredDocs->sortByDesc('created_at')->take(5),
         ]);
     }
 
-public function getCategoryDocumentsChartData()
-{
-    $query = Category::withCount(['documents' => function ($q) {
-        if (request()->start && request()->end) {
-            $q->whereBetween('created_at', [request()->start, request()->end]);
-        }
-    }])->get();
+    public function getCategoryDocumentsChartData()
+    {
+        try {
+            $query = Category::withCount([
+                'documents' => function ($q) {
+                    // Check if both start and end parameters exist
+                    if (request()->filled('start') && request()->filled('end')) {
+                        $q->whereBetween('created_at', [request('start'), request('end')]);
+                    }
+                }
+            ])->get();
 
-    // Debug output
-    if ($query->isEmpty()) {
-        return response()->json([
-            'labels' => [],
-            'data' => [],
-            'debug' => 'No category data found'
-        ]);
+            // Debug logging
+            \Log::info('Category query result:', [
+                'count' => $query->count(),
+                'filters' => [
+                    'start' => request('start'),
+                    'end' => request('end')
+                ],
+                'data' => $query->toArray()
+            ]);
+
+            // Filter out categories with 0 documents if needed for cleaner chart
+            // Uncomment the line below if you want to hide categories with 0 documents
+            // $query = $query->where('documents_count', '>', 0);
+
+            if ($query->isEmpty()) {
+                return response()->json([
+                    'labels' => [],
+                    'data' => [],
+                    'message' => 'No category data found'
+                ]);
+            }
+
+            return response()->json([
+                'labels' => $query->pluck('name')->toArray(),
+                'data' => $query->pluck('documents_count')->toArray(),
+                'success' => true
+            ]);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in getCategoryDocumentsChartData: ' . $e->getMessage());
+
+            return response()->json([
+                'labels' => [],
+                'data' => [],
+                'error' => 'Failed to load chart data',
+                'message' => $e->getMessage()
+            ], 500);
+        }
     }
 
-    return response()->json([
-        'labels' => $query->pluck('name')->toArray(),
-        'data' => $query->pluck('documents_count')->toArray()
-    ]);
+    // Di Controller sebelum generate PDF
+public function generateChartImage($data) {
+    // Menggunakan puppeteer atau library serupa
+    // untuk convert chart ke image
+    $chartUrl = route('chart.render', ['data' => $data]);
+    $imagePath = public_path('temp/chart.png');
+    
+    // Generate image dari chart
+    // Kemudian gunakan di PDF
+    return $imagePath;
 }
-
-
 
     public function exportPdf(Request $request)
     {
         $query = Documents::query();
 
-        if ($request->start && $request->end) {
-            $query->whereBetween('created_at', [$request->start, $request->end]);
+        if ($request->has(['start', 'end'])) {
+            $query->whereBetween('created_at', [$request->input('start'), $request->input('end')]);
         }
+
 
         $filteredDocs = $query->get();
 
         $data = [
             'totalDocuments' => $filteredDocs->count(),
             'totalDownloads' => $filteredDocs->sum('download_count'),
-            'documentsPerCategory' => Category::withCount(['documents' => function ($q) use ($request) {
-                if ($request->start && $request->end) {
-                    $q->whereBetween('created_at', [$request->start, $request->end]);
+            'documentsPerCategory' => Category::withCount([
+                'documents' => function ($q) use ($request) {
+                    if ($request->has(['start', 'end'])) {
+                        $q->whereBetween('created_at', [$request->input('start'), $request->input('end')]);
+                    }
+
                 }
-            }])->get(),
+            ])->get(),
         ];
 
         $pdf = app('dompdf.wrapper')->loadView('laporan.pdf', $data);

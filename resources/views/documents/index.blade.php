@@ -68,10 +68,7 @@
                         <span class="badge bg-{{ $document->access_level == 'Confidential' ? 'danger' : ($document->access_level == 'Internal' ? 'warning' : 'primary') }} ms-2">{{ strtolower($document->access_level) }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <div class="text-muted small">Versi 1 • 0 unduhan</div>
-
                         <div>
-                            <div>
                                 @php
                                 $ext = strtolower($document->file_type);
                                 @endphp

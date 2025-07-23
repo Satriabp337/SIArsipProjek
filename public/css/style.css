@@ -28,51 +28,6 @@ body {
     transform: translateX(-100%);
 }
 
-/* .sidebar .nav-link {
-    color: #64748b;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 14px 24px;
-    border-radius: 10px;
-    margin: 0 16px 8px 16px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.sidebar .nav-link i {
-    margin-right: 12px;
-    font-size: 1.1rem;
-    width: 20px;
-    text-align: center;
-}
-
-.sidebar .nav-link:hover {
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    color: #475569;
-    transform: translateX(4px);
-}
-
-.sidebar .nav-link.active {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
-    color: #ffffff !important;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
-}
-
-.sidebar .nav-link.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 3px;
-    height: 20px;
-    background: #ffffff;
-    border-radius: 0 2px 2px 0;
-} */
-
 /* ======= PROFILE ======= */
 .profile-img {
     width: 44px;
@@ -87,26 +42,6 @@ body {
     border-color: #3b82f6;
     transform: scale(1.02);
 }
-
-/* ======= MAIN CONTENT ======= */
-/* main {
-    margin-left: 260px;
-    padding: 2.5rem 2rem;
-    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    min-height: 100vh;
-}
-
-.main-collapsed {
-    margin-left: 0;
-}
-
-main.container {
-    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-    padding: 2.5rem;
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
-    border: 1px solid #f1f5f9;
-} */
 
 /* ======= CARD & KOMPONEN ======= */
 .card {
@@ -208,26 +143,6 @@ main.container {
     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
 }
 
-/* ======= TOGGLE BUTTON (for all screen) ======= */
-/* #sidebarToggle {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border: 1px solid #e2e8f0;
-    color: #3b82f6;
-    font-size: 1.25rem;
-    margin: 1rem;
-    padding: 12px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-#sidebarToggle:hover {
-    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-} */
-
 /* ======= BUTTONS ======= */
 .btn-primary {
     background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
@@ -315,64 +230,6 @@ main.container {
     background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
 }
 
-/* ======= RESPONSIVE ======= */
-@media (max-width: 991.98px) {
-    .sidebar {
-        transform: translateX(-100%);
-        position: fixed;
-        height: 100vh;
-        top: 0;
-        z-index: 1040;
-        width: 280px;
-    }
-
-    .sidebar.show {
-        transform: translateX(0);
-    }
-
-    main {
-        margin-left: 0;
-        padding: 1.5rem 1rem;
-    }
-
-    main.container {
-        margin-top: 4rem;
-        padding: 2rem;
-    }
-
-    /* Preview excel */
-    table th, 
-    table td {
-        vertical-align: middle;
-        white-space: pre-wrap;
-        word-break: break-word;
-        font-size: 13px;
-    }
-
-    .sticky-top {
-        position: sticky;
-        top: 0;
-        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-        z-index: 1;
-        backdrop-filter: blur(10px);
-    }
-
-    table thead th {
-        font-weight: 600;
-        font-size: 12px;
-    }
-
-    .card {
-        border-radius: 12px;
-        margin-bottom: 1rem;
-    }
-
-    .dropzone {
-        padding: 32px 16px;
-        border-radius: 12px;
-    }
-}
-
 /* ======= SCROLLBAR STYLING ======= */
 ::-webkit-scrollbar {
     width: 6px;
@@ -449,4 +306,282 @@ main.container {
     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
     color: #1e40af;
     border-left: 4px solid #3b82f6;
+}
+
+/* ======= RESPONSIVE IMPROVEMENTS ======= */
+
+/* Mobile First Approach - Base styles for mobile */
+@media (max-width: 575.98px) {
+    body {
+        font-size: 14px;
+    }
+    
+    .card {
+        margin: 0.5rem 0;
+        border-radius: 8px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .dropzone {
+        padding: 24px 12px;
+        border-radius: 8px;
+    }
+    
+    .dropzone .bi {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 10px 16px;
+        font-size: 13px;
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .form-control {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}
+
+/* Tablet styles */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .card {
+        margin: 0.75rem 0;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 11px 20px;
+        font-size: 14px;
+    }
+}
+
+/* General mobile styles */
+@media (max-width: 991.98px) {
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        height: 100vh;
+        top: 0;
+        z-index: 1040;
+        width: 280px;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    main {
+        margin-left: 0 !important;
+        padding: 1rem;
+        width: 100%;
+    }
+
+    main.container {
+        margin-top: 4rem;
+        padding: 1.5rem;
+        max-width: 100%;
+    }
+
+    /* Improved table responsiveness */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -1rem;
+        padding: 0 1rem;
+    }
+    
+    .table {
+        min-width: 600px; /* Minimum width to prevent cramping */
+        margin-bottom: 0;
+    }
+    
+    .table th, 
+    .table td {
+        vertical-align: middle;
+        white-space: nowrap;
+        min-width: 80px;
+        font-size: 12px;
+        padding: 12px 8px;
+    }
+    
+    .table thead th {
+        font-weight: 600;
+        font-size: 11px;
+        position: sticky;
+        top: 0;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        z-index: 10;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Special handling for first column (usually ID/Number) */
+    .table th:first-child,
+    .table td:first-child {
+        position: sticky;
+        left: 0;
+        background: #ffffff;
+        z-index: 5;
+        border-right: 1px solid #e2e8f0;
+        min-width: 60px;
+        max-width: 60px;
+        text-align: center;
+    }
+    
+    .table thead th:first-child {
+        z-index: 15;
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
+
+    /* Text truncation for long content */
+    .table td {
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Show full text on hover */
+    .table td:hover {
+        overflow: visible;
+        white-space: normal;
+        word-break: break-word;
+        position: relative;
+        background: #f8fafc;
+        z-index: 20;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    /* Pagination adjustments */
+    .pagination {
+        justify-content: center;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .page-item .page-link {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 2px;
+    }
+
+    /* Card improvements */
+    .card {
+        border-radius: 12px;
+        margin-bottom: 1rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card .card-body h3 {
+        font-size: 1.5rem;
+    }
+
+    /* Form improvements */
+    .form-label {
+        font-size: 13px;
+    }
+
+    /* Alert improvements */
+    .alert {
+        padding: 12px 16px;
+        font-size: 13px;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Large mobile screens */
+@media (max-width: 767.98px) {
+    .table th, 
+    .table td {
+        font-size: 11px;
+        padding: 10px 6px;
+    }
+    
+    .table th:first-child,
+    .table td:first-child {
+        min-width: 50px;
+        max-width: 50px;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+    
+    main {
+        padding: 0.5rem;
+    }
+    
+    main.container {
+        padding: 1rem;
+    }
+    
+    .table th, 
+    .table td {
+        font-size: 10px;
+        padding: 8px 4px;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .dropzone {
+        padding: 16px 8px;
+    }
+    
+    .btn-primary, .btn-secondary {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+}
+
+/* Desktop styles - restore normal behavior */
+@media (min-width: 992px) {
+    main {
+        margin-left: 260px;
+        padding: 2.5rem 2rem;
+        transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 100vh;
+    }
+
+    .main-collapsed {
+        margin-left: 0;
+    }
+
+    main.container {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03), 0 2px 8px rgba(0, 0, 0, 0.02);
+        border: 1px solid #f1f5f9;
+    }
+    
+    .table th, 
+    .table td {
+        white-space: nowrap;
+        font-size: 14px;
+        padding: 16px;
+    }
+    
+    .table th:first-child,
+    .table td:first-child {
+        position: static;
+        background: transparent;
+        border-right: none;
+        min-width: auto;
+        max-width: none;
+    }
+    
+    .table thead th:first-child {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    }
 }
