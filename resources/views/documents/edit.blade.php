@@ -35,30 +35,6 @@
                     <input type="text" name="sub_category" class="form-control" value="{{ old('sub_category', $document->sub_category) }}">
                 </div>
             </div>
-
-            <!-- <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Departemen</label>
-                    <select name="department_id" class="form-select" required>
-                        <option value="">-- Pilih Departemen --</option>
-                        @foreach ($departments as $dept)
-                            <option value="{{ $dept->id }}" {{ $document->department_id == $dept->id ? 'selected' : '' }}>
-                                {{ $dept->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Tingkat Akses</label>
-                    <select name="access_level" class="form-select" required>
-                        <option value="Public" {{ $document->access_level == 'Public' ? 'selected' : '' }}>Public</option>
-                        <option value="Internal" {{ $document->access_level == 'Internal' ? 'selected' : '' }}>Internal</option>
-                        <option value="Confidential" {{ $document->access_level == 'Confidential' ? 'selected' : '' }}>Confidential</option>
-                    </select>
-                </div>
-            </div> -->
-
             <div class="mb-3">
                 <label class="form-label">Tags (pisahkan dengan koma)</label>
                 <input type="text" name="tags" class="form-control" value="{{ old('tags', $document->tags) }}">

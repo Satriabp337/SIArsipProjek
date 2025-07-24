@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
 
-    Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData']);
+    Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData'])->name('api.chart.category-documents');
     Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
 
 

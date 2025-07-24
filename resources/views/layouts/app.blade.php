@@ -273,6 +273,12 @@
                 padding: 6px 10px;
                 font-size: 0.8rem;
             }
+
+            th,
+            td {
+                font-size: 14px;
+                white-space: nowrap;
+            }
         }
 
         @media (max-width: 576px) {
@@ -336,7 +342,9 @@
         .rounded-lg {
             border-radius: 12px !important;
             #
-        } /* End of style block */
+        }
+
+        /* End of style block */
     </style>
 </head>
 
@@ -426,8 +434,10 @@
             <div class="user-info">
                 <small>
                     Logged in as:<br>
-                    <strong>Dr. Agus Setiawan</strong><br>
-                    <span class="badge bg-light text-dark mt-1">Admin</span>
+                    <strong>{{ Auth::user()->name }}</strong><br>
+                    <span class="badge bg-light text-dark mt-1">
+                        {{ ucfirst(Auth::user()->role ?? 'User') }}
+                    </span>
                 </small>
             </div>
         </nav>

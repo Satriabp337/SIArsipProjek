@@ -10,14 +10,6 @@
                     <h3 class="mb-1 fw-bold text-dark">Dashboard Arsip Digital</h3>
                     <p class="text-muted mb-0">Selamat datang di sistem manajemen arsip kedinasan</p>
                 </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-outline-primary btn-sm">
-                        <i class="bi bi-arrow-clockwise me-1"></i> Refresh
-                    </button>
-                    <button class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-lg me-1"></i> Upload Dokumen
-                    </button>
-                </div>
             </div>
         </div>
     </div>
@@ -113,44 +105,62 @@
                         </a>
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     @if($recentDocuments->count())
                         <div class="table-responsive">
-                            <table class="table table-hover">
+                            <table class="table table-hover mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="border-0 fw-medium">Dokumen</th>
-                                        <th class="border-0 fw-medium">Tanggal Upload</th>
-                                        <th class="border-0 fw-medium">Diupload oleh</th>
-                                        <th class="border-0 fw-medium text-center">Aksi</th>
+                                        <th class="border-0 fw-semibold py-3">Dokumen</th>
+                                        <th class="border-0 fw-semibold py-3">Tanggal Upload</th>
+                                        <th class="border-0 fw-semibold py-3">Diupload oleh</th>
+                                        <th class="border-0 fw-semibold py-3 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($recentDocuments as $doc)
                                     <tr>
-                                        <td class="align-middle">
+                                        <td class="align-middle py-3">
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-primary bg-opacity-10 rounded p-2 me-3">
-                                                    <i class="bi bi-file-earmark-text text-primary"></i>
+                                                <div class="document-icon me-3">
+                                                    @php
+                                                        $extension = strtolower(pathinfo($doc->filename, PATHINFO_EXTENSION));
+                                                        $iconClass = match($extension) {
+                                                            'pdf' => 'bi-file-earmark-pdf text-danger',
+                                                            'doc', 'docx' => 'bi-file-earmark-word text-primary',
+                                                            'xls', 'xlsx' => 'bi-file-earmark-excel text-success',
+                                                            'ppt', 'pptx' => 'bi-file-earmark-ppt text-warning',
+                                                            default => 'bi-file-earmark-text text-secondary'
+                                                        };
+                                                    @endphp
+                                                    <i class="bi {{ $iconClass }} fs-5"></i>
                                                 </div>
                                                 <div>
-                                                    <div class="fw-medium">{{ $doc->title }}</div>
+                                                    <div class="fw-semibold text-dark mb-1">{{ $doc->title }}</div>
                                                     <small class="text-muted">{{ $doc->category->name ?? 'Tidak ada kategori' }}</small>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td class="align-middle">
-                                            <small class="text-muted">{{ $doc->created_at->format('d M Y, H:i') }}</small>
+                                        <td class="align-middle py-3">
+                                            <div class="badge-date">{{ $doc->created_at->format('d M Y, H:i') }}</div>
                                         </td>
-                                        <td class="align-middle">
-                                            <small class="text-muted">{{ $doc->uploaded_by ?? 'Admin' }}</small>
+                                        <td class="align-middle py-3">
+                                            <span class="text-muted fw-medium">{{ $doc->uploaded_by ?? 'Admin' }}</span>
                                         </td>
-                                        <td class="align-middle text-center">
-                                            <a href="{{ route('documents.file', ['filename' => $doc->filename, 'disposition' => 'inline']) }}" 
-                                               target="_blank" 
-                                               class="btn btn-sm btn-outline-primary">
-                                                <i class="bi bi-eye me-1"></i> Lihat
-                                            </a>
+                                        <td class="align-middle text-center py-3">
+                                            <div class="d-flex justify-content-center gap-2">
+                                                <a href="{{ route('documents.file', ['filename' => $doc->filename, 'disposition' => 'inline']) }}" 
+                                                   target="_blank" 
+                                                   class="btn btn-sm btn-outline-primary"
+                                                   title="Lihat dokumen">
+                                                    <i class="bi bi-eye me-1"></i> Lihat
+                                                </a>
+                                                <a href="{{ route('documents.file', ['filename' => $doc->filename, 'disposition' => 'attachment']) }}" 
+                                                   class="btn btn-sm btn-outline-success"
+                                                   title="Download dokumen">
+                                                    <i class="bi bi-download"></i>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach
@@ -198,40 +208,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Storage Info -->
-            <div class="card border-0 shadow-sm">
-                <div class="card-header bg-white border-0 py-3">
-                    <h5 class="mb-0 fw-bold">
-                        <i class="bi bi-hdd me-2 text-primary"></i>
-                        Informasi Penyimpanan
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="text-muted small">Ruang Terpakai</span>
-                            <span class="small fw-medium">2.3 GB / 10 GB</span>
-                        </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-primary" role="progressbar" style="width: 23%"></div>
-                        </div>
-                    </div>
-                    
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <div class="border-end">
-                                <div class="text-primary fw-bold">{{ number_format($totalDocuments) }}</div>
-                                <small class="text-muted">Total File</small>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-success fw-bold">7.7 GB</div>
-                            <small class="text-muted">Tersisa</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -239,6 +215,7 @@
 <style>
 .card {
     transition: all 0.3s ease;
+    border-radius: 12px;
 }
 
 .card:hover {
@@ -248,14 +225,60 @@
 
 .table-hover tbody tr:hover {
     background-color: rgba(13, 110, 253, 0.05);
+    transition: background-color 0.2s ease;
 }
 
 .btn {
     transition: all 0.3s ease;
+    border-radius: 8px;
 }
 
-.progress-bar {
-    transition: width 0.6s ease;
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.document-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(13, 110, 253, 0.1);
+}
+
+.badge-date {
+    background: linear-gradient(135deg, #0dcaf0, #0aa2c0);
+    color: white;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    display: inline-block;
+}
+
+/* Fix untuk kolom tabel di mobile */
+.table th:first-child,
+.table td:first-child {
+    min-width: 200px;
+    width: 40%;
+}
+
+.table th:nth-child(2),
+.table td:nth-child(2) {
+    min-width: 140px;
+    width: 25%;
+}
+
+.table th:nth-child(3),
+.table td:nth-child(3) {
+    min-width: 120px;
+    width: 20%;
+}
+
+.table th:nth-child(4),
+.table td:nth-child(4) {
+    min-width: 140px;
+    width: 15%;
 }
 
 @media (max-width: 768px) {
@@ -270,6 +293,74 @@
     
     .d-flex.gap-2 {
         justify-content: center;
+    }
+    
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+    
+    .document-icon {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    /* Perbaikan khusus untuk mobile */
+    .table th:first-child,
+    .table td:first-child {
+        min-width: 180px;
+    }
+    
+    .table th:nth-child(2),
+    .table td:nth-child(2) {
+        min-width: 120px;
+    }
+    
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        min-width: 100px;
+    }
+    
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        min-width: 120px;
+    }
+}
+
+@media (max-width: 576px) {
+    .d-flex.justify-content-center.gap-2 {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-sm {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Perbaikan untuk layar sangat kecil */
+    .table th:first-child,
+    .table td:first-child {
+        min-width: 160px;
+    }
+    
+    .table th:nth-child(2),
+    .table td:nth-child(2) {
+        min-width: 110px;
+    }
+    
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        min-width: 90px;
+    }
+    
+    .table th:nth-child(4),
+    .table td:nth-child(4) {
+        min-width: 100px;
     }
 }
 </style>
