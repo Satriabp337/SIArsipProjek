@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder
      */
      public function run(): void
     {   
-        $defaultRoleId = \App\Models\Role::where('name', 'user')->value('id');
+        $defaultRoleId = Role::where('name', 'user')->value('id');
 
         if (!$defaultRoleId) {
             throw new \Exception('Role "user" tidak ditemukan. Jalankan RoleSeeder terlebih dahulu.');

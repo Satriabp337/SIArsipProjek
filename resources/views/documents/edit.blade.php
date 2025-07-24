@@ -12,9 +12,15 @@
             @csrf
             @method('PUT')
 
-            <div class="mb-3">
-                <label class="form-label">Judul Dokumen</label>
-                <input type="text" name="title" class="form-control" value="{{ old('title', $document->title) }}" required>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Judul Dokumen</label>
+                    <input type="text" name="title" class="form-control" value="{{ old('title', $document->title) }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Nomor Surat</label>
+                    <input type="text" name="nomor_surat" class="form-control" value="{{ old('nomor_surat', $document->nomor_surat) }}">
+                </div>
             </div>
 
             <div class="row">

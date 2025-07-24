@@ -69,7 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/audit-logs', [AuditController::class, 'showAuditLogs'])->name('audit.logs');
 
     Route::get('/upload', [DocumentsController::class, 'create'])->name('documents.create');
-    Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store')->middleware(['auth', 'permission:upload']);
+    Route::post('/upload', [DocumentsController::class, 'store'])->name('documents.store')->middleware(['auth']);
 
     Route::get('/documents', [DocumentsController::class, 'index'])->name('documents.index');
     Route::get('/documents/{document}/edit', [DocumentsController::class, 'edit'])->name('documents.edit');
@@ -78,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
     Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
     Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->where('filename', '.*')->name('documents.preview.excel');
+    Route::delete('/documents/{document}', [DocumentController::class, 'destroy'])->name('documents.destroy');
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');

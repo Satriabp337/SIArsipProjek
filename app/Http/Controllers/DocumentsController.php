@@ -19,6 +19,7 @@ class DocumentsController extends Controller
 
     public function store(Request $request)
     {
+        
         // Validasi
         $request->validate([
             'title' => 'required',
@@ -34,6 +35,7 @@ class DocumentsController extends Controller
         // Simpan ke DB
         Documents::create([
             'title' => $request->title,
+            'nomor_surat' => $request->nomor_surat,
             'category_id' => $request->category_id,
             'sub_category' => $request->sub_category,
             // 'access_level' => $request->access_level,
@@ -112,6 +114,7 @@ class DocumentsController extends Controller
 
         $document->update($request->only([
             'title',
+            'nomor_surat',
             'category_id',
             'sub_category',
             // 'access_level',
@@ -146,6 +149,19 @@ class DocumentsController extends Controller
 
         return view('documents.preview-excel', compact('data'));
     }
+
+    public function destroy(Document $document)
+{
+    // Hapus file fisik dari storage jika ada
+    if (Storage::exists($document->filename)) {
+        Storage::delete($document->filename);
+    }
+    
+    // Hapus record dari database
+    $document->delete();
+    
+    return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dihapus');
+}
 
     public function boot()
     {

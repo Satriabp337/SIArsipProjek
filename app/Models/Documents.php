@@ -11,6 +11,7 @@ class Documents extends Model
 
     protected $fillable = [
         'title',
+        'nomor_surat',
         'category_id',
         'sub_category',
         // 'department_id',

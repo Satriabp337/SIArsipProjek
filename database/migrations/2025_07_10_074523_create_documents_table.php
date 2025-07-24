@@ -14,6 +14,7 @@ return new class extends Migration
       Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('nomor_surat')->nullable();
             $table->unsignedBigInteger('category_id');
             $table->string('sub_category')->nullable();
             $table->text('description')->nullable();

@@ -33,6 +33,13 @@
                         <input type="text" name="title" class="form-control" placeholder="Masukkan judul dokumen" required>
                     </div>
                     <div class="col-md-6">
+                        <label class="form-label">Nomor Surat</label>
+                        <input type="text" name="nomor_surat" class="form-control" placeholder="Masukkan nomor surat">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6 mb-3 mb-md-0">
                         <label class="form-label">Kategori <span class="text-danger">*</span></label>
                         <select name="category_id" class="form-select" required>
                             <option value="">Pilih kategori</option>
@@ -41,14 +48,14 @@
                             @endforeach
                         </select>
                     </div>
-                </div>
-
-                <div class="row mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Sub Kategori</label>
                         <input type="text" name="sub_category" class="form-control" placeholder="Masukkan sub kategori">
                     </div>
-                    <div class="col-md-6">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
                         <label class="form-label">Tags (pisahkan dengan koma)</label>
                         <input type="text" name="tags" class="form-control" placeholder="contoh: laporan, keuangan, triwulan">
                     </div>
