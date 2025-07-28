@@ -17,7 +17,7 @@
                 <div class="fw-semibold mb-2">Pilih File</div>
                 <input type="file" name="file" class="form-control" required>
                 <div class="small text-muted mt-2">
-                    Mendukung PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, JPEG, PNG (Max 50MB)
+                    Mendukung PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, JPEG, PNG (Max 10MB)
                 </div>
             </div>
         </div>

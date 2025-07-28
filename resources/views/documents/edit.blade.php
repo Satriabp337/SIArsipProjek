@@ -11,7 +11,7 @@
         <form method="POST" action="{{ route('documents.update', $document->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-
+            <input type="hidden" name="redirect_to" value="index">
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Judul Dokumen</label>

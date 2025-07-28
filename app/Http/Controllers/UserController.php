@@ -25,20 +25,22 @@ class UserController extends Controller
         return view('pengguna.edit', compact('user', 'roles'));
     }
 
-    public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+public function update(Request $request, $id)
+{
+    $user = User::findOrFail($id);
 
-        $user->update([
+    $user->update([
         'name' => $request->name,
         'role_id' => $request->role_id,
     ]);
-        $user->refresh();
+    $user->refresh();
 
-        $this->logAudit('edit user profile', '-', "Mengubah role " . $user->name . " menjadi " . $user->role->name ?? 'user');
+    $this->logAudit('edit user profile', '-', "Mengubah role " . $user->name . " menjadi " . $user->role->name ?? 'user');
 
-        return back()->with('success', 'Profil berhasil diubah.');
-    }
+    // Tambahkan route tujuan setelah update
+    return redirect()->route('pengguna.index')
+                   ->with('success', 'Profil berhasil diubah.');
+}
 
     public function destroy(User $user, Request $request)
     {

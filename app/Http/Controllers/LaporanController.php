@@ -16,8 +16,9 @@ class LaporanController extends Controller
     {
         $query = Documents::query();
 
-        $query->whereBetween('created_at', [request()->input('start'), request()->input('end')]);
-
+        if (request()->filled(['start', 'end'])) {
+            $query->whereBetween('created_at', [request('start'), request('end')]);
+        }
 
         $filteredDocs = $query->get();
 
@@ -29,13 +30,13 @@ class LaporanController extends Controller
                     if (request()->filled(['start', 'end'])) {
                         $q->whereBetween('created_at', [request('start'), request('end')]);
                     }
-
                 }
             ])->get(),
             'mostDownloaded' => $filteredDocs->sortByDesc('download_count')->take(5),
             'latestDocuments' => $filteredDocs->sortByDesc('created_at')->take(5),
         ]);
     }
+
 
     public function getCategoryDocumentsChartData()
     {
@@ -58,11 +59,7 @@ class LaporanController extends Controller
                 ],
                 'data' => $query->toArray()
             ]);
-
-            // Filter out categories with 0 documents if needed for cleaner chart
-            // Uncomment the line below if you want to hide categories with 0 documents
-            // $query = $query->where('documents_count', '>', 0);
-
+            
             if ($query->isEmpty()) {
                 return response()->json([
                     'labels' => [],
@@ -90,16 +87,17 @@ class LaporanController extends Controller
     }
 
     // Di Controller sebelum generate PDF
-public function generateChartImage($data) {
-    // Menggunakan puppeteer atau library serupa
-    // untuk convert chart ke image
-    $chartUrl = route('chart.render', ['data' => $data]);
-    $imagePath = public_path('temp/chart.png');
-    
-    // Generate image dari chart
-    // Kemudian gunakan di PDF
-    return $imagePath;
-}
+    public function generateChartImage($data)
+    {
+        // Menggunakan puppeteer atau library serupa
+        // untuk convert chart ke image
+        $chartUrl = route('chart.render', ['data' => $data]);
+        $imagePath = public_path('temp/chart.png');
+
+        // Generate image dari chart
+        // Kemudian gunakan di PDF
+        return $imagePath;
+    }
 
     public function exportPdf(Request $request)
     {

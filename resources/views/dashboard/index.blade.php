@@ -15,14 +15,13 @@
         </div>
 
         <!-- Metrics Cards -->
-        <div class="row mb-4">
-            <div class="col-xl-3 col-md-6 mb-3">
+        <div class="row mb-4 justify-content-center">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <div class="bg-primary bg-gradient rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 60px; height: 60px;">
+                                <div class="metric-icon bg-primary">
                                     <i class="bi bi-file-earmark-text fs-4 text-white"></i>
                                 </div>
                             </div>
@@ -35,13 +34,12 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 mb-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <div class="bg-success bg-gradient rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 60px; height: 60px;">
+                                <div class="metric-icon bg-success">
                                     <i class="bi bi-folder fs-4 text-white"></i>
                                 </div>
                             </div>
@@ -54,32 +52,12 @@
                 </div>
             </div>
 
-            <div class="col-xl-3 col-md-6 mb-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
-                                <div class="bg-warning bg-gradient rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 60px; height: 60px;">
-                                    <i class="bi bi-building fs-4 text-white"></i>
-                                </div>
-                            </div>
-                            <div class="ms-3">
-                                <div class="text-muted small fw-medium">Total Departemen</div>
-                                <h4 class="mb-0 fw-bold text-dark">{{ number_format($totalDepartments) }}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-3 col-md-6 mb-3">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <div class="bg-info bg-gradient rounded-circle d-flex align-items-center justify-content-center"
-                                    style="width: 60px; height: 60px;">
+                                <div class="metric-icon bg-info">
                                     <i class="bi bi-people fs-4 text-white"></i>
                                 </div>
                             </div>
@@ -141,8 +119,7 @@
                                                         </div>
                                                         <div>
                                                             <div class="fw-semibold text-dark mb-1">{{ $doc->title }}</div>
-                                                            <small
-                                                                class="text-muted">{{ $doc->category->name ?? 'Tidak ada kategori' }}</small>
+                                                            <small class="text-muted">{{ $doc->category->name ?? 'Tidak ada kategori' }}</small>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -184,10 +161,9 @@
                 </div>
             </div>
 
-            <!-- Quick Actions & Statistics -->
+            <!-- Quick Actions -->
             <div class="col-xl-4 col-lg-5 mb-4">
-                <!-- Quick Actions -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card border-0 shadow-sm">
                     <div class="card-header bg-white border-0 py-3">
                         <h5 class="mb-0 fw-bold">
                             <i class="bi bi-lightning me-2 text-primary"></i>
@@ -226,6 +202,24 @@
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
         }
 
+        .metric-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--bs-primary), var(--bs-primary-dark));
+        }
+
+        .metric-icon.bg-success {
+            background: linear-gradient(135deg, var(--bs-success), var(--bs-success-dark));
+        }
+
+        .metric-icon.bg-info {
+            background: linear-gradient(135deg, var(--bs-info), var(--bs-info-dark));
+        }
+
         .table-hover tbody tr:hover {
             background-color: rgba(13, 110, 253, 0.05);
             transition: background-color 0.2s ease;
@@ -259,7 +253,7 @@
             display: inline-block;
         }
 
-        /* Fix untuk kolom tabel di mobile */
+        /* Table Responsive Styles */
         .table th:first-child,
         .table td:first-child {
             min-width: 200px;
@@ -284,6 +278,7 @@
             width: 15%;
         }
 
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .container-fluid {
                 padding: 1rem;
@@ -312,7 +307,6 @@
                 font-size: 0.8rem;
             }
 
-            /* Perbaikan khusus untuk mobile */
             .table th:first-child,
             .table td:first-child {
                 min-width: 180px;
@@ -345,7 +339,6 @@
                 font-size: 0.875rem;
             }
 
-            /* Perbaikan untuk layar sangat kecil */
             .table th:first-child,
             .table td:first-child {
                 min-width: 160px;

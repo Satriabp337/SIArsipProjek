@@ -19,7 +19,7 @@ class DocumentsController extends Controller
 
     public function store(Request $request)
     {
-        
+
         // Validasi
         $request->validate([
             'title' => 'required',
@@ -63,7 +63,9 @@ class DocumentsController extends Controller
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
                 $q->where('title', 'like', '%' . $request->search . '%')
-                  ->orWhere('tags', 'like', '%' . $request->search . '%');
+                    ->orWhere('tags', 'like', '%' . $request->search . '%')
+                    ->orWhere('nomor_surat', 'like', '%' . $request->search . '%')
+                    ->orWhere('description', 'like', '%' . $request->search . '%');
             });
         }
 
@@ -71,7 +73,26 @@ class DocumentsController extends Controller
             $query->where('category_id', $request->category_id);
         }
 
-        $documents = $query->latest()->paginate(6);
+        // Sorting - TAMBAHKAN INI
+        switch ($request->get('sort')) {
+            case 'created_at_desc':
+                $query->orderBy('created_at', 'desc');
+                break;
+            case 'created_at_asc':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'title_asc':
+                $query->orderBy('title', 'asc');
+                break;
+            case 'title_desc':
+                $query->orderBy('title', 'desc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc'); // Default sorting
+                break;
+        }
+
+        $documents = $query->latest()->paginate(12);
         $categories = Category::all();
 
         return view('documents.index', compact('documents', 'categories'));
@@ -124,9 +145,10 @@ class DocumentsController extends Controller
 
         $this->logAudit('edit user profile', '-', Auth::user()->name);
 
-        return back()->with('success', 'Dokumen berhasil diubah.');
+        // Ganti return back() dengan redirect ke documents.index
+        return redirect()->route('documents.index')
+            ->with('success', 'Dokumen berhasil diubah.');
     }
-
     public function download($id)
     {
         $document = Documents::findOrFail($id);
@@ -150,18 +172,18 @@ class DocumentsController extends Controller
         return view('documents.preview-excel', compact('data'));
     }
 
-    public function destroy(Document $document)
-{
-    // Hapus file fisik dari storage jika ada
-    if (Storage::exists($document->filename)) {
-        Storage::delete($document->filename);
+    public function destroy(Documents $document)
+    {
+        // Hapus file fisik dari storage jika ada
+        if (Storage::exists($document->filename)) {
+            Storage::delete($document->filename);
+        }
+
+        // Hapus record dari database
+        $document->delete();
+
+        return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dihapus');
     }
-    
-    // Hapus record dari database
-    $document->delete();
-    
-    return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dihapus');
-}
 
     public function boot()
     {

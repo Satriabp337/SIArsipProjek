@@ -8,7 +8,6 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
                         <h2 class="mb-1">Laporan Statistik Arsip</h2>
-                        <!-- <p class="text-muted mb-0">Kelola dan pantau statistik dokumen arsip kedinasan</p> -->
                     </div>
                     <div>
                         <span class="badge bg-info fs-6">{{ now()->format('d F Y') }}</span>
@@ -71,9 +70,9 @@
         </div>
 
         {{-- Statistik Ringkas --}}
-        <div class="row mb-4">
+        <div class="row mb-4 justify-content-center">
             {{-- Total Dokumen --}}
-            <div class="col-md-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
                         <div class="mb-3">
@@ -86,7 +85,7 @@
             </div>
 
             {{-- Total Unduhan --}}
-            <div class="col-md-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
                         <div class="mb-3">
@@ -99,7 +98,7 @@
             </div>
 
             {{-- Total Kategori --}}
-            <div class="col-md-3">
+            <div class="col-lg-4 col-md-6 mb-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body text-center">
                         <div class="mb-3">
@@ -110,20 +109,16 @@
                     </div>
                 </div>
             </div>
-
-            {{-- Space for additional metric if needed --}}
-            <div class="col-md-3">
-                {{-- Reserved for future metrics --}}
-            </div>
         </div>
 
-        {{-- Grafik Section --}}
-        <div class="row mb-4">
-            <div class="col-lg-8 col-12">
+        {{-- Content Row --}}
+        <div class="row">
+            {{-- Grafik Section --}}
+            <div class="col-lg-8 col-12 mb-4">
                 <div class="card shadow-sm h-100">
-                    <div class="card-header bg-light">
-                        <h5 class="card-title mb-0">
-                            <i class="bi bi-bar-chart me-2"></i>Distribusi Dokumen per Kategori
+                    <div class="card-header bg-white border-0 py-3">
+                        <h5 class="card-title mb-0 fw-bold">
+                            <i class="bi bi-bar-chart me-2 text-primary"></i>Distribusi Dokumen per Kategori
                         </h5>
                     </div>
                     <div class="card-body">
@@ -133,52 +128,59 @@
                     </div>
                 </div>
             </div>
-        </div>
-        {{-- Detail Tabel --}}
-        <div class="table-responsive">
-            <table class="table table-hover mb-0 table-bordered text-nowrap align-middle">
-                <thead class="table-light">
-                    <tr>
-                        <th class="text-center">No</th>
-                        <th>Kategori</th>
-                        <th class="text-center">Jumlah</th>
-                        <th class="text-center">Persentase</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($documentsPerCategory as $index => $category)
-                        <tr>
-                            <td class="text-center">{{ $index + 1 }}</td>
-                            <td class="fw-medium">{{ $category->name }}</td>
-                            <td class="text-center">
-                                <span class="badge bg-primary rounded-pill">
-                                    {{ number_format($category->documents_count) }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                @php
-                                    $percentage = $totalDocuments > 0
-                                        ? round(($category->documents_count / $totalDocuments) * 100, 1)
-                                        : 0;
-                                @endphp
-                                <span class="text-muted fw-medium">{{ $percentage }}%</span>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">
-                                <i class="bi bi-inbox display-6 d-block mb-2"></i>
-                                Tidak ada data kategori ditemukan
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
 
-        {{-- Additional table or content space --}}
-        <div class="col-md-6">
-            {{-- Reserved for additional tables or content --}}
+            {{-- Detail Tabel --}}
+            <div class="col-lg-4 col-12 mb-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header bg-white border-0 py-3">
+                        <h5 class="card-title mb-0 fw-bold">
+                            <i class="bi bi-table me-2 text-primary"></i>Detail Kategori
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="border-0 fw-semibold py-3">No</th>
+                                        <th class="border-0 fw-semibold py-3">Kategori</th>
+                                        <th class="border-0 fw-semibold py-3 text-center">Jumlah</th>
+                                        <th class="border-0 fw-semibold py-3 text-center">%</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($documentsPerCategory as $index => $category)
+                                        <tr>
+                                            <td class="align-middle py-3 text-center">{{ $index + 1 }}</td>
+                                            <td class="align-middle py-3 fw-medium">{{ $category->name }}</td>
+                                            <td class="align-middle py-3 text-center">
+                                                <span class="badge bg-primary rounded-pill">
+                                                    {{ number_format($category->documents_count) }}
+                                                </span>
+                                            </td>
+                                            <td class="align-middle py-3 text-center">
+                                                @php
+                                                    $percentage = $totalDocuments > 0
+                                                        ? round(($category->documents_count / $totalDocuments) * 100, 1)
+                                                        : 0;
+                                                @endphp
+                                                <span class="text-muted fw-medium">{{ $percentage }}%</span>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center py-5 text-muted">
+                                                <i class="bi bi-inbox display-6 d-block mb-2"></i>
+                                                <p class="mb-0">Tidak ada data kategori ditemukan</p>
+                                            </td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -194,14 +196,49 @@
             </div>
         </div>
     </div>
-    </div>
 @endsection
 
 @push('styles')
     <style>
+        /* Card Styles */
+        .card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        /* Table Styles */
+        .table-hover tbody tr:hover {
+            background-color: rgba(13, 110, 253, 0.05);
+            transition: background-color 0.2s ease;
+        }
+
+        .table th {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .badge {
+            font-size: 0.875rem;
+        }
+
+        /* Chart Styles */
+        .card-body canvas {
+            max-height: 400px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 350px;
+            width: 100%;
+        }
+
         /* Print styles */
         @media print {
-
             .btn,
             .dropdown,
             .card-header {
@@ -224,22 +261,12 @@
             }
         }
 
-        /* Custom styles */
-        .card-body canvas {
-            max-height: 400px;
-        }
-
-        .table th {
-            font-weight: 600;
-            font-size: 0.875rem;
-        }
-
-        .badge {
-            font-size: 0.875rem;
-        }
-
-        /* Mobile responsive chart styles */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
+            .container-fluid {
+                padding: 1rem;
+            }
+
             .card-body canvas {
                 max-height: 300px !important;
                 height: 300px !important;
@@ -251,12 +278,6 @@
                 width: 100%;
             }
 
-            /* Make stats cards stack better on mobile */
-            .stats-card {
-                margin-bottom: 1rem;
-            }
-
-            /* Adjust font sizes for mobile */
             .display-4 {
                 font-size: 2rem !important;
             }
@@ -265,6 +286,10 @@
             h2.text-success,
             h2.text-info {
                 font-size: 1.5rem !important;
+            }
+
+            .table-responsive {
+                font-size: 0.9rem;
             }
         }
 
@@ -278,7 +303,6 @@
                 height: 250px;
             }
 
-            /* Further reduce font sizes on very small screens */
             .display-4 {
                 font-size: 1.5rem !important;
             }
@@ -321,7 +345,6 @@
             }
 
             // Category Chart Configuration
-            // Category Chart Configuration - Updated version
             function initCategoryChart() {
                 showLoading();
 
@@ -340,7 +363,7 @@
                     apiUrl += '?' + params.toString();
                 }
 
-                console.log('Fetching data from:', apiUrl); // Debug log
+                console.log('Fetching data from:', apiUrl);
 
                 fetch(apiUrl)
                     .then(response => {
@@ -363,12 +386,12 @@
                         if (!data.labels || !data.data || data.labels.length === 0) {
                             const chartContainer = ctx.parentElement;
                             chartContainer.innerHTML = `
-                            <div class="text-center py-5 text-muted">
-                                <i class="bi bi-bar-chart display-4 mb-3"></i>
-                                <p>Tidak ada data untuk ditampilkan</p>
-                                <small>Data akan muncul setelah ada dokumen dalam kategori</small>
-                            </div>
-                        `;
+                                <div class="text-center py-5 text-muted">
+                                    <i class="bi bi-bar-chart display-4 mb-3"></i>
+                                    <p>Tidak ada data untuk ditampilkan</p>
+                                    <small>Data akan muncul setelah ada dokumen dalam kategori</small>
+                                </div>
+                            `;
                             return;
                         }
 
@@ -516,16 +539,16 @@
                         const chartContainer = document.getElementById('categoryChart');
                         if (chartContainer && chartContainer.parentElement) {
                             chartContainer.parentElement.innerHTML = `
-                            <div class="text-center py-5 text-muted">
-                                <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
-                                <p>Gagal memuat data grafik</p>
-                                <small>Error: ${error.message}</small>
-                                <br>
-                                <button class="btn btn-sm btn-outline-primary mt-2" onclick="initCategoryChart()">
-                                    <i class="bi bi-arrow-clockwise me-1"></i>Coba Lagi
-                                </button>
-                            </div>
-                        `;
+                                <div class="text-center py-5 text-muted">
+                                    <i class="bi bi-exclamation-triangle display-4 mb-3"></i>
+                                    <p>Gagal memuat data grafik</p>
+                                    <small>Error: ${error.message}</small>
+                                    <br>
+                                    <button class="btn btn-sm btn-outline-primary mt-2" onclick="initCategoryChart()">
+                                        <i class="bi bi-arrow-clockwise me-1"></i>Coba Lagi
+                                    </button>
+                                </div>
+                            `;
                         }
                     })
                     .finally(() => {
@@ -569,7 +592,6 @@
             };
 
             // Form validation
-            // Form validation - Updated version
             const filterForm = document.querySelector('form[method="GET"]');
             if (filterForm) {
                 filterForm.addEventListener('submit', function (e) {
@@ -583,15 +605,12 @@
                     }
 
                     showLoading();
-
-                    // Allow form to submit naturally, chart will be refreshed on page load
                 });
             }
 
             // Check if URL has filter parameters, refresh chart if needed
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.has('start') || urlParams.has('end')) {
-                // Chart will be initialized with filter parameters
                 console.log('Filter parameters detected, chart will load with filters');
             }
         });
