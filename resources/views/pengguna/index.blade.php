@@ -26,7 +26,7 @@
                             <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td><span class="badge bg-secondary">{{ $user->role->name ?? 'user' }}</span></td>
+                            <td><span class="badge bg-secondary">{{ ucfirst($user->role) }}</span></td>
                             <td>
                                 @if($user->email_verified_at)
                                     <span class="badge bg-success">Terverifikasi</span>

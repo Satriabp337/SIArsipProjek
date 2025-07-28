@@ -78,27 +78,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/documents/file/{filename}', [DocumentsController::class, 'getFile'])->where('filename', '.*')->name('documents.file');
     Route::get('/documents/download/{filename}', [DocumentsController::class, 'download'])->name('documents.download'); 
     Route::get('/documents/preview/{filename}', [DocumentsController::class, 'previewExcel'])->where('filename', '.*')->name('documents.preview.excel');
-    Route::delete('/documents/{document}', [DocumentsController::class, 'destroy'])->name('documents.destroy');
+    Route::delete('/documents/{document}', [DocumentsController::class, 'destroy'])->name('documents.destroy')->middleware(['admin.operator']);
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export/pdf', [LaporanController::class, 'exportPdf'])->name('laporan.export.pdf');
 
     Route::get('/api/chart-data/category-documents', [LaporanController::class, 'getCategoryDocumentsChartData'])->name('api.chart.category-documents');
     Route::get('/api/chart-data/department-documents', [LaporanController::class, 'chartDepartment']);
-
-
-    //tes kode cek akses
-
-    Route::get('/cek-akses', function () {
-    /** @var User|null $user */
-    $user = Auth::user();
-        dd([
-            'user' => $user->name,
-            'role' => $user->role,
-            'has_upload_permission' => $user->hasPermission('upload'),
-        ]);
-
-    })->middleware('auth');
 
 });
 

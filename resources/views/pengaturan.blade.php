@@ -48,41 +48,14 @@
             <small class="form-text text-muted">Tentukan siapa yang dapat melihat dokumen dalam sistem</small>
         </div>
 
-        {{-- Tabel Hak Akses --}}
-        <div class="form-group">
-            <label>Manajemen Peran Pengguna</label>
-            <table class="table table-sm">
-                <thead>
-                    <tr>
-                        <th>Peran</th>
-                        @foreach ($permissions as $permission)
-                            <th>{{ ucfirst($permission->label) }}</th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($roles as $role)
-                        <tr>
-                            <td>{{ ucfirst($role->name) }}</td>
-                            @foreach ($permissions as $permission)
-                                <td>
-                                    @if($role->name === 'admin')
-                                        {{-- Admin selalu memiliki semua hak akses (tapi tidak bisa diubah) --}}
-                                        <input type="checkbox" checked disabled>
-                                        <input type="hidden" name="permissions[{{ $role->id }}][]" value="{{ $permission->id }}">
-                                    @else
-                                        <input type="checkbox"
-                                               name="permissions[{{ $role->id }}][]"
-                                               value="{{ $permission->id }}"
-                                               {{ $role->permissions->contains($permission->id) ? 'checked' : '' }}>
-                                    @endif
-                                </td>
-                            @endforeach
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+{{-- Tabel Hak Akses --}}
+<div class="form-group">
+    <label>Manajemen Peran Pengguna</label>
+    <div class="alert alert-info">
+        Sistem saat ini menggunakan kontrol akses statis berdasarkan peran pengguna di tabel <code>users</code>.
+    </div>
+</div>
+
 
         <button type="submit" class="btn btn-primary">Simpan Pengaturan Akses</button>
     </form>
@@ -186,10 +159,19 @@
                         <form>
                             <div class="form-group">
                                 <label>Penggunaan Penyimpanan</label>
-                                <div class="progress mb-2">
-                                    <div class="progress-bar" role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100">65%</div>
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                         role="progressbar"
+                                         style="width: {{ $usagePercentage ?? 0 }}%;"  {{-- error hanya di css, view bisa dihanle secara normal. bisa dibiarkan saja. --}}
+                                         aria-valuenow="{{ $usagePercentage ?? 0 }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                        {{ round($usagePercentage, 0) }}%
+                                    </div>
                                 </div>
-                                <small class="form-text text-muted">65% dari 10 GB digunakan</small>
+                                <small class="form-text text-muted">
+                                    {{ number_format($usedGB, 2) }} GB dari {{ $quotaGB }} GB digunakan
+                                </small>
                             </div>
                             <div class="form-group">
                                 <label>Lokasi Penyimpanan</label>

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->string('doc_name', 255);
             $table->string('user_name', 40);
             $table->unsignedInteger('user_id')->default(0);
-            $table->string('user_email', 100)->default('ay.sasongko2@gmail.com');
+            $table->string('user_email', 100)->default('undefined@gmail.com');
             $table->timestamp('date')->useCurrent();
             $table->string('action', 255)->default('unknown');
             $table->string('details', 255)->nullable();

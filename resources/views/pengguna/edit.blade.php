@@ -14,14 +14,16 @@
 
         <div class="mb-3">
     <label class="form-label">Peran</label>
-    <select name="role_id" class="form-select" required>
+    <select name="role" class="form-select" required>
         @foreach($roles as $role)
-            <option value="{{ $role->id }}" {{ $user->role_id === $role->id ? 'selected' : '' }}>
-                {{ ucfirst($role->name) }}
-            </option>
-        @endforeach
+    <option value="{{ $role }}" {{ $user->role === $role ? 'selected' : '' }}>
+        {{ ucfirst($role) }}
+    </option>
+@endforeach
+
     </select>
 </div>
+
 
         <button type="submit" class="btn btn-primary">Simpan</button>
         <a href="{{ route('pengguna.index') }}" class="btn btn-secondary">Batal</a>

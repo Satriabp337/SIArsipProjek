@@ -436,7 +436,7 @@
                     Logged in as:<br>
                     <strong>{{ Auth::user()->name }}</strong><br>
                     <span class="badge bg-light text-dark mt-1">
-                        {{ ucfirst(Auth::user()->role->name ?? 'User') }}
+                        {{ ucfirst(Auth::user()->role ?? 'User') }}
                     </span>
                 </small>
             </div>
