@@ -22,7 +22,7 @@
 
                         <div class="form-group">
                             <div class="alert alert-info">
-                                Sistem saat ini menggunakan kontrol akses statis berdasarkan peran pengguna di tabel <code>users</code>.
+                                Sistem saat ini menggunakan kontrol akses statis berdasarkan peran pengguna. {{--ada kemungkinan untuk mengupdate ke kontrol akses dinamis di masa depan.--}}
                             </div>
                         </div>
                     </section>
