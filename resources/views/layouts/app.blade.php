@@ -414,6 +414,7 @@
                         </a>
                     </li>
 
+                    @if(in_array(Auth::user()->role, ['admin', 'operator']))
                     <li class="nav-item">
                         <a href="/pengguna" class="nav-link {{ request()->is('pengguna*') ? 'active' : '' }}">
                             <i class="bi bi-people"></i>
@@ -427,6 +428,7 @@
                             Pengaturan
                         </a>
                     </li>
+                    @endif
                 </ul>
             </div>
 

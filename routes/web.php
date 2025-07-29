@@ -45,7 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kategori', [CategoryController::class, 'index'])->name('kategori.index');
     Route::get('/kategori/{category}', [CategoryController::class, 'show'])->name('kategori.show');
 
-    Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index');
+    Route::get('/pengguna', [UserController::class, 'index'])->name('pengguna.index')->middleware(['admin.operator']);
     Route::get('/pengguna/{user}/edit', [UserController::class, 'edit'])->name('pengguna.edit');
     Route::put('/pengguna/{user}', [UserController::class, 'update'])->name('pengguna.update');
     Route::delete('/pengguna/{user}', [UserController::class, 'destroy'])->name('pengguna.destroy');

@@ -247,6 +247,7 @@
                                                 </li>
                                                 <li><hr class="dropdown-divider my-1"></li>
                                                 <li>
+                                                    @if(in_array(Auth::user()->role, ['admin', 'operator']))
                                                     <form method="POST" action="{{ route('documents.destroy', $document->id) }}" class="d-inline w-100" 
                                                           onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
                                                         @csrf
@@ -255,6 +256,7 @@
                                                             <i class="bi bi-trash me-2"></i>Hapus
                                                         </button>
                                                     </form>
+                                                    @endif
                                                 </li>
                                             </ul>
                                         </div>
@@ -290,7 +292,7 @@
                                                class="btn btn-outline-secondary btn-sm mobile-action-btn">
                                                 <i class="bi bi-pencil me-1"></i>Edit
                                             </a>
-                                            
+                                            @if(in_array(Auth::user()->role, ['admin', 'operator']))
                                             <form method="POST" action="{{ route('documents.destroy', $document->id) }}" 
                                                   class="mobile-action-form"
                                                   onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini?')">
@@ -300,6 +302,7 @@
                                                     <i class="bi bi-trash me-1"></i>Hapus
                                                 </button>
                                             </form>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
