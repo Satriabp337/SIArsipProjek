@@ -21,7 +21,8 @@ class Documents extends Model
         'filename',
         'original_filename',
         'file_type',
-        'file_size'
+        'file_size',
+        'uploaded_by'
     ];
 
     public function categories()

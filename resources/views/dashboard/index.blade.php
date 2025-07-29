@@ -127,7 +127,7 @@
                                                     <div class="badge-date">{{ $doc->created_at->format('d M Y, H:i') }}</div>
                                                 </td>
                                                 <td class="align-middle py-3">
-                                                    <span class="text-muted fw-medium">{{ auth()->user()->name ?? 'Admin' }}</span>
+                                                    <span class="text-muted fw-medium">{{ $doc->uploaded_by ?? 'Undefined' }}</span>
                                                 </td>
                                                 <td class="align-middle text-center py-3">
                                                     <div class="d-flex justify-content-center gap-2">

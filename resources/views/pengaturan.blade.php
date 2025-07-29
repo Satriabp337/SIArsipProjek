@@ -11,9 +11,7 @@
                 <div class="list-group list-group-flush">
                     <a href="#pengaturan-akses" class="list-group-item list-group-item-action active">Pengaturan Akses</a>
                     <a href="#keamanan-data" class="list-group-item list-group-item-action">Keamanan Data</a>
-                    <a href="#notifikasi" class="list-group-item list-group-item-action">Notifikasi</a>
                     <a href="#penyimpanan" class="list-group-item list-group-item-action">Penyimpanan</a>
-                    <a href="#versi-dokumen" class="list-group-item list-group-item-action">Versi Dokumen</a>
                 </div>
             </div>
         </div>
@@ -36,17 +34,6 @@
 
     <form action="{{ route('pengaturan.akses.update') }}" method="POST">
         @csrf
-
-        {{-- Kontrol Akses Dokumen --}}
-        <div class="form-group">
-            <label>Kontrol Akses Dokumen</label>
-            <select class="form-control" name="akses_dokumen">
-                <option value="publik">Publik - Semua pengguna dapat melihat</option>
-                <option value="internal">Internal - Hanya anggota organisasi</option>
-                <option value="privat">Privat - Hanya pengguna tertentu</option>
-            </select>
-            <small class="form-text text-muted">Tentukan siapa yang dapat melihat dokumen dalam sistem</small>
-        </div>
 
 {{-- Tabel Hak Akses --}}
 <div class="form-group">
@@ -101,58 +88,6 @@
 
                     <hr class="my-5">
 
-                    <!-- Pengaturan Notifikasi -->
-                    <section id="notifikasi">
-                        <h5 class="mb-4">Pengaturan Notifikasi</h5>
-                        <form>
-                            <div class="form-group">
-                                <label>Frekuensi Notifikasi</label>
-                                <select class="form-control">
-                                    <option>Segera</option>
-                                    <option>Harian</option>
-                                    <option>Mingguan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Jenis Notifikasi</label>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifEmail" checked>
-                                    <label class="custom-control-label" for="notifEmail">Email</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifWeb" checked>
-                                    <label class="custom-control-label" for="notifWeb">Web Browser</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifMobile">
-                                    <label class="custom-control-label" for="notifMobile">Mobile Push</label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label>Event yang Akan Dikirimkan Notifikasi</label>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifEdit" checked>
-                                    <label class="custom-control-label" for="notifEdit">Dokumen Diedit</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifNew" checked>
-                                    <label class="custom-control-label" for="notifNew">Dokumen Baru</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifDelete" checked>
-                                    <label class="custom-control-label" for="notifDelete">Dokumen Dihapus</label>
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="notifComment">
-                                    <label class="custom-control-label" for="notifComment">Komentar Baru</label>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Simpan Pengaturan Notifikasi</button>
-                        </form>
-                    </section>
-
-                    <hr class="my-5">
-
                     <!-- Pengaturan Penyimpanan -->
                     <section id="penyimpanan">
                         <h5 class="mb-4">Pengaturan Penyimpanan</h5>
@@ -162,7 +97,7 @@
                                 <div class="progress">
                                     <div class="progress-bar"
                                          role="progressbar"
-                                         style="width: {{ $usagePercentage ?? 0 }}%;"  {{-- error hanya di css, view bisa dihanle secara normal. bisa dibiarkan saja. --}}
+                                         style="width: {{ $usagePercentage ?? 0 }}%;"  {{-- error hanya di css, view bisa ditampilkan secara normal. aman jika dibiarkan saja. --}}
                                          aria-valuenow="{{ $usagePercentage ?? 0 }}"
                                          aria-valuemin="0"
                                          aria-valuemax="100">
@@ -177,8 +112,6 @@
                                 <label>Lokasi Penyimpanan</label>
                                 <select class="form-control">
                                     <option>Penyimpanan Lokal</option>
-                                    <option>Amazon S3</option>
-                                    <option>Google Cloud Storage</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -199,38 +132,6 @@
                     </section>
 
                     <hr class="my-5">
-
-                    <!-- Pengaturan Versi Dokumen -->
-                    <section id="versi-dokumen">
-                        <h5 class="mb-4">Pengaturan Versi Dokumen</h5>
-                        <form>
-                            <div class="form-group">
-                                <label>Kebijakan Versi Dokumen</label>
-                                <select class="form-control">
-                                    <option>Simpan semua versi</option>
-                                    <option>Simpan versi utama saja</option>
-                                    <option selected>Simpan versi dalam 90 hari terakhir</option>
-                                </select>
-                                <small class="form-text text-muted">Versi dokumen lama akan membantu dalam pemulihan data</small>
-                            </div>
-                            <div class="form-group">
-                                <label>Frekuensi Penyimpanan Versi</label>
-                                <select class="form-control">
-                                    <option>Setiap perubahan</option>
-                                    <option selected>Setiap 5 perubahan</option>
-                                    <option>Setiap 10 perubahan</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <div class="custom-control custom-switch">
-                                    <input type="checkbox" class="custom-control-input" id="autoVersion" checked>
-                                    <label class="custom-control-label" for="autoVersion">Versi Otomatis</label>
-                                </div>
-                                <small class="form-text text-muted">Sistem akan membuat versi baru secara otomatis</small>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Simpan Pengaturan Versi</button>
-                        </form>
-                    </section>
                 </div>
             </div>
         </div>

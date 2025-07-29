@@ -33,20 +33,21 @@ class DocumentsController extends Controller
         $path = $file->store('arsip', 'public');
 
         // Simpan ke DB
-        Documents::create([
+        $document = Documents::create([
             'title' => $request->title,
             'nomor_surat' => $request->nomor_surat,
             'category_id' => $request->category_id,
             'sub_category' => $request->sub_category,
-            // 'access_level' => $request->access_level,
             'description' => $request->description,
             'tags' => $request->tags,
             'filename' => $path,
             'original_filename' => $file->getClientOriginalName(),
             'file_type' => $file->getClientOriginalExtension(),
             'file_size' => $file->getSize(),
+            'uploaded_by' => Auth::user()->name,
         ]);
 
+        $this->logAudit('Document Upload', $document->title, Auth::user()->name . ' mengupload ' . $document->title);
         return redirect()->route('documents.index')->with('success', 'Dokumen berhasil diunggah!');
     }
 
@@ -143,7 +144,7 @@ class DocumentsController extends Controller
             'description',
         ]));
 
-        $this->logAudit('edit user profile', '-', Auth::user()->name);
+        $this->logAudit('Document Edit', $document->title, Auth::user()->name . ' mengedit ' . $document->title);
 
         // Ganti return back() dengan redirect ke documents.index
         return redirect()->route('documents.index')
@@ -180,6 +181,7 @@ class DocumentsController extends Controller
         }
 
         // Hapus record dari database
+        $this->logAudit('Document Delete', $document->title, Auth::user()->name . ' menghapus ' . $document->title);
         $document->delete();
 
         return redirect()->route('documents.index')->with('success', 'Dokumen berhasil dihapus');

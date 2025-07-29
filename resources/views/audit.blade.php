@@ -3,38 +3,38 @@
 <div class="container mt-5">
     <h1 class="h3 mb-4 fw-bold text-dark">Audit Log</h1>
 
-    <!-- Filter Section -->
-    <div class="card shadow-sm mb-4">
-        <div class="card-body">
-            <form id="filter-form" class="row g-3">
-                <div class="col-md-4">
-                    <label class="form-label">Document</label>
-                    <select id="doc-filter" class="form-select">
-                        <option value="">All Documents</option>
-                        <option value="user_profile">User Profiles</option>
-                        <option value="product">Products</option>
-                        <option value="order">Orders</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Action</label>
-                    <select id="action-filter" class="form-select">
-                        <option value="">All Actions</option>
-                        <option value="create">Create</option>
-                        <option value="update">Update</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label">Editor</label>
-                    <input type="text" id="user-filter" class="form-control" placeholder="Search by editor">
-                </div>
-                <div class="col-12 text-end">
-                    <button type="button" id="reset-filters" class="btn btn-outline-secondary mt-2">Reset Filters</button>
-                </div>
-            </form>
-        </div>
+<!-- Filter Section -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form id="filter-form" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Document</label>
+                <select id="doc-filter" class="form-select">
+                    <option value="">All Documents & User Profiles</option>
+                    <option value="document">Documents</option>
+                    <option value="user profile">User Profiles</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Action</label>
+                <select id="action-filter" class="form-select">
+                    <option value="">All Actions</option>
+                    <option value="upload">Upload</option>
+                    <option value="edit">Edit</option>
+                    <option value="delete">Delete</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Editor</label>
+                <input type="text" id="user-filter" class="form-control" placeholder="Search by editor">
+            </div>
+            <div class="col-12 text-end">
+                <button type="button" id="reset-filters" class="btn btn-outline-secondary mt-2">Reset Filters</button>
+            </div>
+        </form>
     </div>
+</div>
+
 
     <!-- Audit Table -->
 <div class="card shadow-sm">
@@ -112,9 +112,10 @@
             });
 
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
             auditLogs = await response.json();
             filteredLogs = [...auditLogs];
+
+            updateActionOptions(); // initialize action dropdown correctly
             renderAuditLog();
         } catch (error) {
             console.error('Error fetching audit logs:', error);
@@ -126,11 +127,20 @@
 
     function renderAuditLog() {
         filteredLogs = auditLogs.filter(log => {
-            const docMatch = docFilter.value ? log.doc_name.toLowerCase().includes(docFilter.value.toLowerCase()) : true;
-            const actionMatch = actionFilter.value ? log.action === actionFilter.value : true;
-            const userMatch = userFilter.value ?
-                (log.user_name.toLowerCase().includes(userFilter.value.toLowerCase()) ||
-                log.user_email.toLowerCase().includes(userFilter.value.toLowerCase())) : true;
+            const docMatch = docFilter.value === 'document'
+                ? log.action.toLowerCase().includes('document')
+                : docFilter.value === 'user profile'
+                    ? log.action.toLowerCase().includes('user')
+                    : true;
+
+            const actionMatch = actionFilter.value
+                ? log.action.toLowerCase().includes(actionFilter.value.toLowerCase())
+                : true;
+
+            const userMatch = userFilter.value
+                ? (log.user_name.toLowerCase().includes(userFilter.value.toLowerCase()) ||
+                   log.user_email.toLowerCase().includes(userFilter.value.toLowerCase()))
+                : true;
 
             return docMatch && actionMatch && userMatch;
         });
@@ -150,10 +160,14 @@
                 row.style.cursor = 'pointer';
                 row.addEventListener('click', () => showAuditDetails(log));
 
+                const actionType = log.action.toLowerCase().includes('delete') ? 'danger'
+                                : log.action.toLowerCase().includes('edit') ? 'primary'
+                                : 'success';
+
                 row.innerHTML = `
                     <td>${log.id}</td>
                     <td>${log.doc_name}</td>
-                    <td><span class="badge bg-${log.action === 'create' ? 'success' : log.action === 'update' ? 'primary' : 'danger'}">${log.action}</span></td>
+                    <td><span class="badge bg-${actionType}">${log.action}</span></td>
                     <td>
                         <div class="d-flex align-items-center">
                             <div class="rounded-circle bg-light border d-flex justify-content-center align-items-center me-2" style="width: 40px; height: 40px;">
@@ -234,24 +248,63 @@
         modal.show();
     }
 
+    function updateActionOptions() {
+        const uploadOption = [...actionFilter.options].find(opt => opt.value === 'upload');
+        if (!uploadOption) return;
+
+        if (docFilter.value === 'user profile') {
+            uploadOption.style.display = 'none';
+            if (actionFilter.value === 'upload') {
+                actionFilter.value = '';
+            }
+        } else {
+            uploadOption.style.display = '';
+        }
+    }
+
     // Events
-    docFilter.addEventListener('change', () => { currentPage = 1; renderAuditLog(); });
-    actionFilter.addEventListener('change', () => { currentPage = 1; renderAuditLog(); });
-    userFilter.addEventListener('input', () => { currentPage = 1; renderAuditLog(); });
+    docFilter.addEventListener('change', () => {
+        currentPage = 1;
+        updateActionOptions();
+        renderAuditLog();
+    });
+
+    actionFilter.addEventListener('change', () => {
+        currentPage = 1;
+        renderAuditLog();
+    });
+
+    userFilter.addEventListener('input', () => {
+        currentPage = 1;
+        renderAuditLog();
+    });
+
     resetFilters.addEventListener('click', () => {
         docFilter.value = '';
         actionFilter.value = '';
         userFilter.value = '';
         currentPage = 1;
+        updateActionOptions();
         renderAuditLog();
     });
-    prevPage.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderAuditLog(); } });
+
+    prevPage.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderAuditLog();
+        }
+    });
+
     nextPage.addEventListener('click', () => {
         const totalPages = Math.ceil(filteredLogs.length / itemsPerPage);
-        if (currentPage < totalPages) { currentPage++; renderAuditLog(); }
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderAuditLog();
+        }
     });
 
     document.addEventListener('DOMContentLoaded', initAuditLog);
 </script>
+
 
 @endsection

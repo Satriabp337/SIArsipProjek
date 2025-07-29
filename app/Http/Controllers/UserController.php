@@ -35,7 +35,7 @@ class UserController extends Controller
 
         $user->refresh();
 
-        $this->logAudit('edit user profile', '-', "Mengubah role {$user->name} menjadi {$user->role}");
+        $this->logAudit('Edit User Profile', '-', "Mengubah role {$user->name} menjadi {$user->role}");
 
         return redirect()->route('pengguna.index')
                          ->with('success', 'Profil berhasil diubah.');
@@ -43,7 +43,7 @@ class UserController extends Controller
 
     public function destroy(User $user, Request $request)
     {
-        $this->logAudit('delete user profile', '-', "Menghapus akun {$user->name}.");
+        $this->logAudit('Delete User Profile', '-', "Menghapus akun {$user->name}.");
         $user->delete();
 
         return redirect()->route('pengguna.index')->with('success', 'User berhasil dihapus.');
